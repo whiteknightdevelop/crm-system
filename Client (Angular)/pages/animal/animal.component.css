@@ -1,0 +1,30 @@
+.petadmin-card-main-height{
+  min-height: 460px;
+}
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+}
+
+p-toggleButton#test.p-togglebutton.p-button.p-highlight{
+  background: red !important;
+}
+
+.animal-name-title{
+  font-size: 1.5em;
+  display: block;
+  margin-bottom: .125rem;
+}
+
+
+.age {
+  margin-bottom: 0;
+  float: left;
+  font-weight: 600;
+}
+
+.no-bottom-margin {
+  margin-bottom: 0;
+}

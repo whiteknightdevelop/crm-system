@@ -1,0 +1,35 @@
+@media print{@page {size: portrait}}
+
+p {
+  margin: 0;
+}
+
+label {
+  font-weight: bold;
+}
+
+.confirmation-sign {
+  text-align: center;
+  margin: 20px 60px 0px 60px;
+}
+
+.main-divider {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.owner-instructions, .owner-instructions h5{
+  font-size: 15px;
+}
+
+.owner-instructions h3{
+  font-size: 20px;
+  margin-bottom: 0px;
+}
+
+.owner-instructions ol{
+  margin-top: 0px;
+}
+
+
+

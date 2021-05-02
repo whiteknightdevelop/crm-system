@@ -1,0 +1,9 @@
+@media print{@page {size: portrait}}
+
+p {
+  margin: 0;
+}
+
+.measurements {
+  display: flex;
+}

@@ -1,0 +1,15 @@
+.msg-container{
+  text-align: center;
+  background: #C8E6C9;
+  border: solid #439446;
+  border-top-width: medium;
+  border-right-width: medium;
+  border-bottom-width: medium;
+  border-left-width: medium;
+  border-width: 0px 6px 0px 0px;
+  color: #224a23;
+}
+
+.msg{
+  text-align: center;
+}

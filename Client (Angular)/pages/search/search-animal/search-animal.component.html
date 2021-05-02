@@ -1,0 +1,80 @@
+<p-progressBar mode="indeterminate" *ngIf="!pageIsLoaded"></p-progressBar>
+<p-messages styleClass="error-msg" *ngIf="!pageIsLoaded"></p-messages>
+<div class="grid-container" *ngIf="pageIsLoaded">
+  <p-messages styleClass="error-msg"></p-messages>
+  <div class="content-section introduction">
+    <div class="feature-intro">
+      <h1>{{h1Header}}</h1>
+      <span>{{h1Description}}</span>
+    </div>
+  </div>
+  <form [formGroup]="searchAnimalForm" (ngSubmit)="onSubmit()">
+    <div class="content-section implementation">
+      <div class="card page-content-header">
+        <div>
+          <div class="p-grid">
+            <div class="p-col-4">
+              <label for="searchString">ערך חיפוש:</label>
+              <input id="searchString" type="text" pInputText formControlName="searchString" class="p-inputtext p-component"
+                     [ngClass]="(searchString.invalid)?'ng-invalid ng-dirty':''"/>
+              <small id="searchString-help" *ngIf="searchString.invalid" class="ng-invalid ng-dirty p-d-block">{{validationError}}</small>
+            </div>
+            <div class="p-col-4">
+              <label for="search">סינון לפי:</label>
+              <p-dropdown id="search" [options]="fieldsList" formControlName="selectedField" optionLabel="field" (onChange)="dropdownOnChnage($event)"></p-dropdown>
+            </div>
+            <div class="p-col-4">
+              <label id="submit-button-label">&nbsp;</label>
+              <p-button type="submit" label="חפש" icon="pi pi-search" iconPos="right" [disabled]="!searchAnimalForm.valid"></p-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-main p-formgrid p-grid p-fluid p-jc-center" *ngIf="showProgressSpinner">
+      <div class="p-col-1 p-md-1">
+        <p-progressSpinner *ngIf="showProgressSpinner"></p-progressSpinner>
+      </div>
+    </div>
+    <div class="content-main p-formgrid p-grid p-fluid" *ngIf="tableDataIsLoaded">
+      <div class="p-col-12 p-md-12">
+        <div class="card">
+          <p-table [value]="resultList" selectionMode="single" [scrollable]="true" scrollHeight="350px" [virtualScroll]="true" [virtualRowHeight]="30"
+                   *ngIf="resultList.length!=0">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>מספר תיק</th>
+                <th>שם משפחה</th>
+                <th>שם פרטי</th>
+                <th>ישוב</th>
+                <th>טלפון</th>
+                <th>סוג</th>
+                <th>שם</th>
+                <th>גזע</th>
+                <th>צבע</th>
+                <th>מין</th>
+                <th>מספר שבב</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+              <tr [routerLink]="['/animal', item.animal.animalId]">
+                <td>{{item.animal.ownerId}}</td>
+                <td>{{item.owner.lastName | shortString: 25}}</td>
+                <td>{{item.owner.firstName | shortString: 25}}</td>
+                <td>{{item.owner.city | shortString: 25}}</td>
+                <td>{{item.owner.phone | shortString: 25}}</td>
+                <td>{{item.animal.type | shortString: 25}}</td>
+                <td>{{item.animal.name | shortString: 25}}</td>
+                <td>{{item.animal.breed | shortString: 25}}</td>
+                <td>{{item.animal.color | shortString: 25}}</td>
+                <td>{{item.animal.gender | shortString: 25}}</td>
+                <td>{{item.animal.chipNumber | shortString: 25}}</td>
+              </tr>
+            </ng-template>
+          </p-table>
+          <app-empty-list-error *ngIf="resultList.length==0"></app-empty-list-error>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

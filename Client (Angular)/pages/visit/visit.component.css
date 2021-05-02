@@ -1,0 +1,24 @@
+.block{
+  display: block;
+}
+
+.underline{
+  text-decoration: underline;
+}
+
+.p-inputtextarea{
+
+}
+
+.small-inputgroup{
+  padding-left: 6px;
+  padding-right: 0px;
+}
+
+#diagnosis1, #diagnosis2, #diagnosis3{
+  direction: ltr;
+}
+
+.card-top-margin{
+  margin-top: 20px;
+}

@@ -1,0 +1,37 @@
+<p-progressBar mode="indeterminate" *ngIf="!pageIsLoaded"></p-progressBar>
+<p-messages styleClass="error-msg" *ngIf="!pageIsLoaded"></p-messages>
+<div class="grid-container" *ngIf="pageIsLoaded">
+  <p-toast styleClass="toast-msg" key="showSaveChanges" position="top-left"
+           [showTransitionOptions]="'10ms'" [hideTransitionOptions]="'10ms'" [preventOpenDuplicates]="true"></p-toast>
+  <div class="content-main p-formgrid p-grid p-fluid p-jc-center p-mt-6">
+    <div class="p-lg-3 p-md-3" class="p-shadow-10">
+      <p-card class="login-card">
+        <ng-template pTemplate="header">
+          <h3 class="p-text-center">התחברות</h3>
+          <div class="p-field text-align-center">
+            <p-avatar class="login-avatar" icon="pi pi-user" size="xlarge" shape="circle"></p-avatar>
+          </div>
+        </ng-template>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="p-fluid">
+            <div class="p-field">
+              <label for="userName">שם משתמש:</label>
+              <input id="userName" type="text" class="p-inputtext p-component round-input" pInputText formControlName="userName">
+              <small id="userName-help" *ngIf="userName.invalid && loginForm.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+            <div class="p-field">
+              <label for="password">סיסמה:</label>
+              <input id="password" type="password" class="p-inputtext p-component round-input" pInputText formControlName="password">
+              <small id="password-help" *ngIf="password.invalid && loginForm.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+            <div class="p-field p-mt-4">
+              <button pButton pRipple type="submit" [disabled]="!loginForm.valid" label="התחבר" class="p-button-outlined p-ripple p-button p-component p-shadow-2"></button>
+            </div>
+            <p-messages styleClass="error-msg"></p-messages>
+          </div>
+        </form>
+      </p-card>
+    </div>
+  </div>
+</div>
+

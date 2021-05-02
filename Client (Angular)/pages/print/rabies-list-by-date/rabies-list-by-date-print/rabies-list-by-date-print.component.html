@@ -1,0 +1,41 @@
+<div class="print-content">
+  <div class="p-grid text-align-center">
+    <div class="p-col-12">
+      <h3>{{reportH1Title}} מתאריך {{from | date:'dd/MM/yyyy'}} עד {{to | date:'dd/MM/yyyy'}}</h3>
+    </div>
+  </div>
+  <p-table [value]="rabiesList" styleClass="p-datatable-gridlines rabies-list-by-date-print-table">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 50px;">מס'</th>
+        <th style="width: 100px;">ת.חיסון</th>
+        <th style="width: 100px;">ת.ז.</th>
+        <th style="width: 150px;">שם הבעלים</th>
+        <th style="width: 200px;">כתובת</th>
+        <th style="width: 100px;">טלפון</th>
+        <th style="width: 100px;">שם</th>
+        <th style="width: 120px;">גזע</th>
+        <th style="width: 80px;">מין</th>
+        <th style="width: 100px;">ת.לידה</th>
+        <th style="width: 90px;">צבע</th>
+        <th style="width: 150px;">מס' שבב</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i="rowIndex">
+      <tr>
+        <td>{{i+1}}</td>
+        <td>{{item.visit.visitTime | date:'dd/MM/yyyy'}}</td>
+        <td>{{item.owner.idNumber}}</td>
+        <td>{{item.owner.lastName}} {{item.owner.firstName}}</td>
+        <td>{{item.owner.street}} {{item.owner.houseNumber}}/{{item.owner.apartmentNumber}}</td>
+        <td>{{item.owner.phone}}</td>
+        <td>{{item.animal.name}}</td>
+        <td>{{item.animal.breed}}</td>
+        <td>{{item.animal.gender}}</td>
+        <td>{{item.animal.dateOfBirth | date:'dd/MM/yyyy'}}</td>
+        <td>{{item.animal.color}}</td>
+        <td>{{item.animal.chipNumber}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

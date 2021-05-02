@@ -1,0 +1,37 @@
+<div class="page-content-header">
+  <div>
+    <h5>טיפולים מונעים</h5>
+  </div>
+  <div>
+    <p-button label="הוסף" styleClass="p-button-link" class="p-d-inline-block" (onClick)="addPreventiveTreatment()"></p-button>
+    <p-button label="מחק" styleClass="p-button-link" class="p-d-inline-block" (onClick)="deleteSelectedTreatments()"
+              [disabled]="selectedTreatments.length<=0"></p-button>
+  </div>
+</div>
+<table class="fixed_header">
+  <thead>
+  <tr class="pr-re-table-tr">
+    <th>סמן</th>
+    <th>טיפול</th>
+    <th>ימים</th>
+    <th>טיפול הבא</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let treatment of visitPreventiveTreatments" class="pr-re-table-tr" [ngClass]="(selectedTreatments.includes(treatment))?'active':''">
+    <td>
+      <p-checkbox [value]="treatment" ngDefaultControl [(ngModel)]="selectedTreatments"
+                  (ngModelChange)="changeCheck($event)"></p-checkbox>
+    </td>
+    <td>{{treatment.name}}</td>
+    <td class="ltr-number-fix" [ngClass]="(treatment.remainingNumOfDays < 0)?'ng-invalid ng-dirty':''">
+      {{treatment.remainingNumOfDays.toString()}}
+    </td>
+    <td>{{treatment.nextTreatmentName}}</td>
+  </tr>
+  </tbody>
+</table>
+<app-empty-list-error *ngIf="visitPreventiveTreatments.length==0"></app-empty-list-error>
+
+
+

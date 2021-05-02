@@ -1,0 +1,70 @@
+<div class="print-content">
+  <div class="p-grid text-align-center">
+    <div class="p-col-12">
+      <h3>סיכום ביקור מתאריך {{visitPage.visit.visitTime | date:'dd/MM/yyyy'}}</h3>
+    </div>
+  </div>
+  <h5 class="underline">פרטי בעלים</h5>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 95px;"><label>שם הבעלים:</label></div>
+    <div class="p-col-fixed" style="width: 120px;"><p>{{visitPage.owner.lastName}} {{visitPage.owner.firstName}}</p></div>
+    <div class="p-col-fixed" style="width: 40px;"><label>ת.ז:</label></div>
+    <div class="p-col-fixed" style="width: 110px;"><p>{{visitPage.owner.idNumber}}</p></div>
+    <div class="p-col-fixed" style="width: 60px;"><label>כתובת:</label></div>
+    <div class="p-col-fixed" style="width: 180px;"><p>{{visitPage.owner.street}} {{visitPage.owner.houseNumber}}/{{visitPage.owner.apartmentNumber}}, {{visitPage.owner.city}}</p></div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 50px;"><label>טלפון:</label></div>
+    <div class="p-col-fixed" style="width: 180px;"><p>{{visitPage.owner.phone}}</p></div>
+  </div>
+  <h5 class="underline">פרטי בע"ח</h5>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 80px;"><label>שם בע"ח:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{visitPage.animal.name}}</p></div>
+    <div class="p-col-fixed" style="width: 50px;"><label>סוג:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{visitPage.animal.type}}</p></div>
+    <div class="p-col-fixed" style="width: 40px;"><label>מין:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{visitPage.animal.gender}}</p></div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 80px;"><label>גזע:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{visitPage.animal.breed}}</p></div>
+    <div class="p-col-fixed" style="width: 50px;"><label>צבע:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{visitPage.animal.color}}</p></div>
+    <div class="p-col-fixed" style="width: 95px;"><label>תאריך לידה:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{visitPage.animal.dateOfBirth | date:"dd/MM/yyyy"}}</p></div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 80px;"><label>מס' שבב:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{visitPage.animal.chipNumber | shortString: 60}}</p></div>
+  </div>
+  <h5 class="underline">פרטי ביקור</h5>
+  <div class="p-grid">
+    <div class="p-col">
+      <div class="measurements">
+        <label>מדדים: </label>
+        <div>חום: {{visitPage.visit.temperature | measurements}},</div>
+        <div> משקל: {{visitPage.visit.weight | measurements}},</div>
+        <div> דופק: {{visitPage.visit.pulse | measurements}}</div>
+      </div>
+      <div><label>סיבת ביקור: </label>{{visitPage.visit.cause | emptyString}}</div>
+      <div><label>תסמינים: </label>{{visitPage.visit.symptoms | emptyString}}</div>
+      <div><label>אבחון: </label>{{visitPage.visit.diagnosis1 | emptyString}} {{visitPage.visit.diagnosis2}} {{visitPage.visit.diagnosis3}}</div>
+      <div><label>טיפול: </label>{{visitPage.visit.treatment1 | emptyString}} {{visitPage.visit.treatment2}} {{visitPage.visit.treatment3}} {{visitPage.visit.treatment4}}
+        {{visitPage.visit.treatment5}} {{visitPage.visit.treatment6}}</div>
+      <div>
+        <label>טיפולים מונעים: </label>
+        <ng-container *ngIf="visitPage.preventiveTreatmentsList.length > 0">
+          <ng-container *ngFor="let item of visitPage.preventiveTreatmentsList; let isLast=last">
+            {{item.name}}{{isLast ? '.' : ', '}}
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="visitPage.preventiveTreatmentsList.length == 0">
+          אין
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+

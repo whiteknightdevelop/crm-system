@@ -1,0 +1,219 @@
+<p-progressBar mode="indeterminate" *ngIf="showProgress"></p-progressBar>
+<p-messages styleClass="error-msg" *ngIf="!pageIsLoaded"></p-messages>
+<div class="grid-container" *ngIf="pageIsLoaded">
+  <p-toast styleClass="toast-msg" key="showSaveChanges" position="top-left"
+           [showTransitionOptions]="'10ms'" [hideTransitionOptions]="'10ms'" [preventOpenDuplicates]="true"></p-toast>
+  <p-messages styleClass="error-msg"></p-messages>
+  <p-confirmDialog header="Confirmation"
+                   acceptButtonStyleClass="confirmDialogAcceptButton" rejectButtonStyleClass="confirmDialogRejectButton"></p-confirmDialog>
+  <div class="content-section introduction">
+    <div class="feature-intro">
+      <h1>{{h1Header}}</h1>
+      <span>{{h1Description}}</span>
+    </div>
+    <div *ngIf="inCreateNewMode">
+      <button (click)="onAdd()" [disabled]="!ownerDetailsForm.valid"
+              class="p-button-success p-ripple p-button p-component" pButton pRipple type="button" label="שמור" icon="pi pi-check" iconPos="right"></button>
+    </div>
+  </div>
+  <form [formGroup]="ownerDetailsForm">
+    <div class="content-section implementation" *ngIf="!inCreateNewMode">
+      <div class="card page-content-header">
+        <div>
+          <span class="file-number-header" *ngIf="ownerPage">מספר תיק: {{ownerPage.owner.ownerId}}  – (ת.פתיחה: {{ (ownerPage.owner.createdDate !== null) ? (ownerPage.owner.createdDate | date:'dd/MM/yyyy') : "לא קיים" }})</span>
+          <span class="doctor-name-header" *ngIf="ownerPage">רופא: {{ownerPage.owner.user.lastName}} {{ownerPage.owner.user.firstName}}</span>
+          <h6 class="owner-name-title font-weight-semibold" *ngIf="ownerPage">{{lastName.value}} {{firstName.value}}</h6>
+        </div>
+        <div>
+          <p-menubar [model]="menuItems"></p-menubar>
+        </div>
+      </div>
+    </div>
+    <div class="content-main p-formgrid p-grid p-fluid">
+      <div class="p-col-12 p-md-4">
+        <div class="card card-min-height">
+
+          <!-- Row - TextHeader -->
+          <h5>פרטים אישיים</h5>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-6">
+              <label for="idNumber">ת.ז:</label>
+              <input id="idNumber" type="text" class="p-inputtext p-component"
+                     formControlName="idNumber" pInputText [ngClass]="(idNumber.invalid)?'ng-invalid ng-dirty':''">
+              <small id="idNumber-help" *ngIf="idNumber.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+            <div class="p-field p-col-12 p-md-6">
+              <label for="lastName">שם משפחה:</label>
+              <input id="lastName" type="text" class="p-inputtext p-component"
+                     formControlName="lastName" pInputText [ngClass]="(lastName.invalid)?'ng-invalid ng-dirty':''">
+              <small id="lastName-help" *ngIf="lastName.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-6">
+              <label for="firstName">שם פרטי:</label>
+              <input id="firstName" type="text" class="p-inputtext p-component"
+                     formControlName="firstName" pInputText [ngClass]="(firstName.invalid)?'ng-invalid ng-dirty':''">
+              <small id="firstName-help" *ngIf="firstName.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+            <div class="p-field p-col-12 p-md-6">
+              <label for="dateOfBirth">ת. לידה:</label>
+              <input id="dateOfBirth" type="date" class="p-inputtext p-component html5-calendar" pInputText formControlName="dateOfBirth" min="1900-01-01" max="2049-01-01">
+              <small id="dateOfBirth-help" *ngIf="dateOfBirth.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-6">
+              <label for="phone">טלפון:</label>
+              <input id="phone" type="text" class="p-inputtext p-component"
+                     formControlName="phone" pInputText [ngClass]="(phone.invalid)?'ng-invalid ng-dirty':''">
+              <small id="phone-help" *ngIf="phone.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+            <div class="p-field p-col-12 p-md-6">
+              <label for="mobile">טלפון נוסף:</label>
+              <input id="mobile" type="text" class="p-inputtext p-component"
+                     formControlName="mobile" pInputText [ngClass]="(mobile.invalid)?'ng-invalid ng-dirty':''">
+              <small id="mobile-help" *ngIf="mobile.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-6">
+              <label for="email">דוא"ל:</label>
+              <input id="email" type="text" class="p-inputtext p-component"
+                     formControlName="email" pInputText [ngClass]="(email.invalid)?'ng-invalid ng-dirty':''">
+              <small id="email-help" *ngIf="email.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+
+          <!-- Row - Comment -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-12">
+              <label for="comment">הערה:</label>
+              <app-my-comment id="comment" formControlName="comment" [labelText]="'הערה:'" [btnOnLabel]="'הסתר הערה'" [btnOffLabel]="'הצג הערה'"
+                              [inCreateNewMode]="inCreateNewMode" [maxlength]="500"></app-my-comment>
+              <small id="comment-help" *ngIf="comment.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="p-col-12 p-md-4">
+        <div class="card card-min-height">
+          <!-- Row - TextHeader -->
+          <h5>כתובת</h5>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-6">
+              <label for="city">עיר 1:</label>
+              <input id="city" type="text" class="p-inputtext p-component"
+                     formControlName="city" pInputText [ngClass]="(city.invalid)?'ng-invalid ng-dirty':''">
+              <small id="city-help" *ngIf="city.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+            <div class="p-field p-col-12 p-md-6">
+              <label for="street">רחוב 1:</label>
+              <input id="street" type="text" class="p-inputtext p-component"
+                     formControlName="street" pInputText [ngClass]="(street.invalid)?'ng-invalid ng-dirty':''">
+              <small id="street-help" *ngIf="street.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-6">
+              <label for="houseNumber">מספר בית 1:</label>
+              <input id="houseNumber" type="text" class="p-inputtext p-component"
+                     formControlName="houseNumber" pInputText [ngClass]="(houseNumber.invalid)?'ng-invalid ng-dirty':''">
+              <small id="houseNumber-help" *ngIf="houseNumber.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+            <div class="p-field p-col-12 p-md-6">
+              <label for="apartmentNumber">מספר דירה 1:</label>
+              <input id="apartmentNumber" type="text" class="p-inputtext p-component"
+                     formControlName="apartmentNumber" pInputText [ngClass]="(apartmentNumber.invalid)?'ng-invalid ng-dirty':''">
+              <small id="apartmentNumber-help" *ngIf="apartmentNumber.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-6">
+              <label for="postalCode">מיקוד 1:</label>
+              <input id="postalCode" type="text" class="p-inputtext p-component"
+                     formControlName="postalCode" pInputText [ngClass]="(postalCode.invalid)?'ng-invalid ng-dirty':''">
+              <small id="postalCode-help" *ngIf="postalCode.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-12">
+              <p-accordion expandIcon="pi pi-chevron-left" styleClass="address2-accordion">
+                <p-accordionTab header="כתובת נוספת" [selected]="inCreateNewMode">
+
+                  <!-- Row -->
+                  <div class="p-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-md-6">
+                      <label for="city2">עיר 2:</label>
+                      <input id="city2" type="text" class="p-inputtext p-component"
+                             formControlName="city2" pInputText [ngClass]="(city2.invalid)?'ng-invalid ng-dirty':''">
+                      <small id="city2-help" *ngIf="city2.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+                    </div>
+                    <div class="p-field p-col-12 p-md-6">
+                      <label for="street2">רחוב 2:</label>
+                      <input id="street2" type="text" class="p-inputtext p-component"
+                             formControlName="street2" pInputText [ngClass]="(street2.invalid)?'ng-invalid ng-dirty':''">
+                      <small id="street2-help" *ngIf="street2.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+                    </div>
+                  </div>
+
+                  <!-- Row -->
+                  <div class="p-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-md-6">
+                      <label for="houseNumber2">מספר בית 2:</label>
+                      <input id="houseNumber2" type="text" class="p-inputtext p-component"
+                             formControlName="houseNumber2" pInputText [ngClass]="(houseNumber2.invalid)?'ng-invalid ng-dirty':''">
+                      <small id="houseNumber2-help" *ngIf="houseNumber2.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+                    </div>
+                    <div class="p-field p-col-12 p-md-6">
+                      <label for="apartmentNumber2">מספר דירה 2:</label>
+                      <input id="apartmentNumber2" type="text" class="p-inputtext p-component"
+                             formControlName="apartmentNumber2" pInputText [ngClass]="(apartmentNumber2.invalid)?'ng-invalid ng-dirty':''">
+                      <small id="apartmentNumber2-help" *ngIf="apartmentNumber2.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+                    </div>
+                  </div>
+
+                  <!-- Row -->
+                  <div class="p-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-md-6">
+                      <label for="postalCode2">מיקוד 2:</label>
+                      <input id="postalCode2" type="text" class="p-inputtext p-component"
+                             formControlName="postalCode2" pInputText [ngClass]="(postalCode2.invalid)?'ng-invalid ng-dirty':''">
+                      <small id="postalCode2-help" *ngIf="postalCode2.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+                    </div>
+                  </div>
+                </p-accordionTab>
+              </p-accordion>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="p-col-12 p-md-4" *ngIf="!inCreateNewMode">
+        <div class="card card-min-height">
+
+          <!-- Row - Animal List -->
+          <app-animal-list *ngIf="ownerPage" [animalsList]="ownerPage.animalsList" [ownerId]="ownerPage.owner.ownerId"></app-animal-list>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

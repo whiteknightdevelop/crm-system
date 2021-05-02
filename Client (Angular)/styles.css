@@ -1,0 +1,382 @@
+html, body { height: 100%; text-align: right !important; direction:rtl !important; font-family: 'Assistant', sans-serif;}
+body { margin: 0; font-family: 'Assistant', sans-serif; color: var(--text-color);}
+
+.page-content-header{
+  display: flex;
+  justify-content: space-between;
+}
+.content-main{
+  background-color: var(--surface-b);
+  color: var(--text-color);
+  padding: 2rem;
+}
+.doctor-name-header{
+  display: block;
+}
+
+.ng-dirty.ng-invalid {
+  border-color: #f44336;
+  color: #f44336;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.float-left{
+  float: left;
+}
+
+.avatar-img{
+  height: 60px;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.text-muted {
+  color: #999;
+}
+.img-muted {
+  opacity: 0.2;
+}
+
+.ltr-number-fix {
+  direction: ltr;
+}
+
+.pick-from-list-add-button {
+  margin-top: 25px !important;
+  height: 34px !important;
+  width: 34px !important;
+}
+
+textarea {
+  min-height: 34px !important;
+}
+details
+td.diagnosis, td.treatment{
+  text-align: center !important;
+}
+
+p-inputnumber#temperature span{
+  width: 60px;
+}
+
+p-inputnumber#weight span{
+  width: 65px;
+}
+
+.card-details, .card-sterilization, .card-reminder-list{
+  min-height: 337px;
+}
+
+.file-number-header{
+  font-size: 1.17em;
+}
+
+.doctor-name-header{
+  font-size: 1em;
+}
+
+.html5-calendar{
+  direction: ltr;
+}
+
+.round-input {
+  border-radius: 20px;
+}
+.text-align-center {
+  text-align: center;
+}
+
+.red-alert > span{
+  color: #f44336 !important;
+  font-weight: 600;
+}
+
+.green-alert > span{
+  color: #00804a !important;
+}
+
+div.my-comment-toggleButton > span.p-button-icon {
+  color: #00804a !important;
+}
+
+label {
+  font-weight: 600;
+}
+
+.mouse-pointer { cursor: pointer; }
+
+
+/* Print Global */
+/* ----------------------------------------------------------------------------------------------------------- */
+.page-break { page-break-after: always; }
+.page-break:last-child { page-break-after: avoid; }
+
+@media print {
+  body{
+    font-size: 12pt;
+    font-family: 'Assistant', sans-serif;
+    background-color: white;
+  }
+
+  .isPrinting > * { display: none; }
+  .isPrinting app-print-layout { display: block; }
+}
+
+
+.rabies-list-by-date-print-table {
+  font-size: 14px;
+}
+
+.rabies-list-by-date-print-table > div > table > .p-datatable-tbody > tr > td {
+  padding: 2px 2px 1px 2px;
+}
+
+/* PrimeNG Custom RTL CSS */
+/* ----------------------------------------------------------------------------------------------------------- */
+
+
+.p-progressbar {
+  height: 3px !important;
+}
+
+.progressbar-backup {
+  height: 1.5rem !important;
+}
+
+.p-button .p-button-icon-right {
+  margin-right: 0.5rem;
+  margin-left: 0rem;
+}
+
+.p-button .p-button-icon-left {
+  margin-right: 0rem;
+  margin-left: 0.5rem;
+}
+
+.p-menubar .p-menuitem-link .p-menuitem-icon {
+  margin-left: 0.5rem;
+  margin-right: 0rem;
+}
+
+.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link .p-submenu-icon {
+  margin-left: 0rem;
+  margin-right: 0.5rem;
+}
+
+.pi-exclamation-triangle{
+  color: red;
+  font-weight: bold;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.p-toast .p-toast-message .p-toast-message-content .p-toast-message-icon {
+  font-size: 20px;
+  margin-left: 10px;
+}
+
+.address2-accordion {
+  margin-top: 10px;
+}
+.p-messages{
+  direction: ltr;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Togglebutton Status ----------------------------------------------- */
+
+.togglebutton-active{
+  padding: 2px 6px !important;
+  margin-top: 18px;
+  margin-right: 10px;
+  width: 70px;
+}
+
+.togglebutton-active:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+}
+
+.togglebutton-active:not(.p-disabled):not(.p-highlight) {
+  background: #D32F2F;
+  border-color: #D32F2F;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.togglebutton-active:not(.p-disabled):not(.p-highlight):hover {
+  background: #c62c2c;
+  border-color: #D32F2F;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.togglebutton-active.p-highlight {
+  background: #e9ecef;
+  border-color: #ced4da;
+  color: #495057;
+}
+
+.togglebutton-active.p-highlight:hover {
+  background: #c62c2c;
+  border-color: #D32F2F;
+  color: #495057;
+}
+
+.togglebutton-active.p-togglebutton.p-button:not(.p-disabled):not(.p-highlight):hover {
+  background: #c62c2c;
+  border-color: #D32F2F;
+  color: #fff;
+}
+
+
+/* Togglebutton Sterilized ----------------------------------------------- */
+
+.togglebutton-sterilized{
+  margin-top: 5px;
+  margin-bottom: 1rem;
+  height: 35px;
+}
+/* ----------------------------------------------------------------------- */
+
+.p-inputnumber-input{
+  text-align: center;
+}
+
+p-inputnumber.ng-invalid > span > input {
+  border: 1px solid #f44336 !important;
+  color: #f44336;
+}
+
+p-dropdown#search > div {
+  width: 158px;
+}
+
+p-dropdown.prescription-dropdown > div > div.p-dropdown-panel {
+  direction: ltr;
+  text-align: left;
+}
+
+p-dropdown > div > div.p-dropdown-panel > div > div.p-dropdown-filter-container > span.p-dropdown-filter-icon {
+  right: auto;
+  left: 0.5rem;
+}
+
+.p-dropdown-filter-icon {
+  right: auto !important;
+  left: 0.5rem;
+}
+
+p-dropdown#drugName > div > div.p-dropdown-panel > div > div.p-dropdown-filter-container > span.p-dropdown-filter-icon,
+p-dropdown#drugFrequency > div > div.p-dropdown-panel > div > div.p-dropdown-filter-container > span.p-dropdown-filter-icon,
+p-dropdown#drugPeriod > div > div.p-dropdown-panel > div > div.p-dropdown-filter-container > span.p-dropdown-filter-icon {
+  right: 0.5rem;
+  left: auto;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  text-align: right;
+  padding: 1rem 0rem;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  text-align: right;
+  padding: 1rem 1rem;
+}
+
+#submit-button-label {
+  display: block;
+}
+
+.p-dialog-content{
+  overflow: hidden !important;
+}
+
+
+p-dialog#add-reminder-dialog > div > div {
+  width: 300px;
+}
+
+p-calendar > span > div {
+  right: 0px;
+  left: auto !important;
+}
+
+.p-datatable-scrollable-body {
+  overflow-y: auto !important;
+}
+
+p-chip .p-chip-icon {
+  margin-left: 0.5rem;
+  margin-right: 0rem;
+}
+
+p-card > div {
+  padding: 40px;
+}
+
+p-card.login-card > div {
+  width: 360px;
+}
+
+p-overlaypanel > div {
+  top: 50px !important;
+}
+
+.p-avatar.p-avatar-xl {
+  width: 130px;
+  height: 130px;
+}
+.p-avatar.p-avatar-xl .p-avatar-icon {
+  font-size: 60px;
+}
+
+p-dialog.dialog-backup-restore > div > div > .p-dialog-footer {
+ text-align: center !important;
+}
+
+p-progressSpinner.progressSpinner-backup-restore > div {
+  height: 50px;
+}
+
+p-progressSpinner.progressSpinner-backup-restore > div > svg > circle.p-progress-spinner-circle {
+  animation: p-progress-spinner-dash 1.5s ease-in-out infinite, p-progress-spinner-color-custom 6s ease-in-out infinite;
+}
+
+@keyframes p-progress-spinner-color-custom {
+  100%,
+  0% {
+    stroke: #00804a;
+  }
+  40% {
+    stroke: #00804a;
+  }
+  66% {
+    stroke: #00804a;
+  }
+  80%,
+  90% {
+    stroke: #00804a;
+  }
+}
+
+.rtl-icon {
+  margin-left: 5px;
+}
+
+.p-datatable-tbody > tr > td.item-hover:hover {
+  background: #d0d3d6;
+  color: #495057;
+  cursor: pointer;
+}
+

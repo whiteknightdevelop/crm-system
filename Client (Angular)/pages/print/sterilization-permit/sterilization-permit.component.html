@@ -1,0 +1,58 @@
+<div class="print-content">
+  <div class="p-grid text-align-center">
+    <div class="p-col-12">
+      <h3>{{reportH1Title}}</h3>
+    </div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col-12 p-mt-2">
+      <p>אני, הח"מ <span class="form-value">{{user.lastName}} {{user.firstName}}</span> מס' רשיון <span class="form-value">{{user.license}}</span>.</p>
+      <p>מצהיר/ה בזה כי בתאריך <span class="form-value">{{animalPage.animal.dateOfSterilization | date:"dd/MM/yyyy"}}</span> בוצע עיקור של הכלב השייך ל-<span>{{animalPage.animalOwner.lastName}} {{animalPage.animalOwner.firstName}}</span>, ת.ז. {{animalPage.animalOwner.idNumber}}.</p>
+      <p>כתובת: <span class="form-value">{{animalPage.animalOwner.street}} {{animalPage.animalOwner.houseNumber}}/{{animalPage.animalOwner.apartmentNumber}}</span> , טלפון: <span class="form-value">{{animalPage.animalOwner.phone}}</span>. </p>
+    </div>
+  </div>
+  <div class="p-grid p-mt-4">
+    <div class="p-col-fixed" style="width: 80px;"><label>סוג:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.type}}</p></div>
+    <div class="p-col-fixed" style="width: 95px;"><label>מין:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.gender}}</p></div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 80px;"><label>שם בע"ח:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.name}}</p></div>
+    <div class="p-col-fixed" style="width: 95px;"><label>מס' שבב:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.chipNumber | shortString: 60}}</p></div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 80px;"><label>גזע:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.breed}}</p></div>
+    <div class="p-col-fixed" style="width: 95px;"><label>תאריך לידה:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.dateOfBirth | date:"dd/MM/yyyy"}}</p></div>
+  </div>
+  <div class="p-grid confirmation-sign">
+    <div class="p-col-4">
+      <p>{{user.lastName}} {{user.firstName}}</p>
+      <hr>
+      <p>שם רופא</p>
+    </div>
+    <div class="p-col-4">
+      <p>{{user.license}}</p>
+      <hr>
+      <p>מס' רשיון</p>
+    </div>
+    <div class="p-col-4">
+      <p>&nbsp;</p>
+      <hr>
+      <p>חתימה וחותמת</p>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+

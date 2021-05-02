@@ -1,0 +1,77 @@
+<div class="layout-topbar">
+  <a [routerLink]="['/']" class="logo">
+    <img alt="logo" [src]="'../../../../assets/logo.png'" />
+  </a>
+  <ul #topbarMenu class="topbar-menu">
+    <li class="topbar-submenu">
+      <a tabindex="2" (click)="toggleMenu($event, 2)"><i class="pi pi-search rtl-icon"></i>חיפוש</a>
+      <ul [@overlayMenuAnimation]="'visible'" *ngIf="activeMenuIndex === 2" (@overlayMenuAnimation.start)="onOverlayMenuEnter($event)">
+        <li><a [routerLink]="['/search-owner']" routerLinkActive="active"><span>חיפוש בעלים</span></a></li>
+        <li><a [routerLink]="['/search-animal']" routerLinkActive="active"><span>חיפוש בע"ח</span></a></li>
+      </ul>
+    </li>
+    <li><a [routerLink]="['/owner']" routerLinkActive="active"><i class="pi pi-plus rtl-icon"></i>תיק חדש</a></li>
+    <li><a [routerLink]="['/followup-all']" routerLinkActive="active"><i class="pi pi-book rtl-icon"></i>מעקב</a></li>
+    <li class="topbar-submenu">
+      <a tabindex="4" (click)="toggleMenu($event, 4)"><i class="pi pi-file-o rtl-icon"></i>דוחות</a>
+      <ul [@overlayMenuAnimation]="'visible'" *ngIf="activeMenuIndex === 4" (@overlayMenuAnimation.start)="onOverlayMenuEnter($event)">
+        <li [routerLink]="['/rabies-list']" routerLinkActive="active"><a><span>גליון כלבת</span></a></li>
+        <li [routerLink]="['/debts-sheet']" routerLinkActive="active"><a><span>דוח חייבים</span></a></li>
+        <li [routerLink]="['/visited']" routerLinkActive="active"><a><span>כן ביקרו</span></a></li>
+        <li [routerLink]="['/not-visited']" routerLinkActive="active"><a><span>לא ביקרו</span></a></li>
+      </ul>
+    </li>
+    <li class="topbar-submenu">
+      <a tabindex="6" (click)="toggleMenu($event, 6)"><i class="pi pi-mobile rtl-icon"></i>מסרונים</a>
+      <ul [@overlayMenuAnimation]="'visible'" *ngIf="activeMenuIndex === 6" (@overlayMenuAnimation.start)="onOverlayMenuEnter($event)">
+        <li [routerLink]="['/preventive-reminder']" routerLinkActive="active"><a><span>תזכורת + טיפול מונע</span></a></li>
+        <li [routerLink]="['/appointments']" routerLinkActive="active"><a><span>תורים</span></a></li>
+      </ul>
+    </li>
+    <li class="topbar-submenu">
+      <a tabindex="7" (click)="toggleMenu($event, 7)"><i class="pi pi-ticket rtl-icon"></i>גיבוי</a>
+      <ul [@overlayMenuAnimation]="'visible'" *ngIf="activeMenuIndex === 7" (@overlayMenuAnimation.start)="onOverlayMenuEnter($event)">
+        <li><a (click)="backup()"><span><i class="pi pi-download rtl-icon"></i>יצירת גיבוי</span></a></li>
+        <li><a (click)="restore()"><span><i class="pi pi-upload rtl-icon"></i>שחזור גיבוי</span></a></li>
+      </ul>
+    </li>
+  </ul>
+  <div class="flex-spacer"></div>
+  <p-chip (click)="op.toggle($event)" label="{{authService.getUser().lastName + ' ' + authService.getUser().firstName}}" icon="pi pi-user" styleClass="p-ml-2"></p-chip>
+  <p-overlayPanel #op>
+    <ng-template pTemplate >
+      <p-button label="התנתק" (click)="logout()" styleClass="p-button-link"></p-button>
+    </ng-template>
+  </p-overlayPanel>
+</div>
+<p-dialog class="dialog-backup-restore" header="יצירת קובץ גיבוי" [(visible)]="displayBackupDialog" [modal]="true" [style]="{width: '50vw'}" [maximizable]="false" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false" [closable]="false" [position]="'top'">
+  <p>תהליך יצירת קובץ והצפנתו לוקח מספר שניות. אנא המתן...</p>
+  <ng-template pTemplate="footer">
+    <div class="p-mb-4">
+      <p-progressSpinner class="progressSpinner-backup-restore"></p-progressSpinner>
+    </div>
+    <div>
+      <p-progressBar [value]="signalrService.progressPercentageComplete" [styleClass]="'progressbar-backup'"></p-progressBar>
+    </div>
+  </ng-template>
+</p-dialog>
+<p-dialog class="dialog-backup-restore" header="שחזור גיבוי" [(visible)]="displayRestoreDialog" [modal]="true" [style]="{width: '50vw'}" [maximizable]="false" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false" [closable]="!showUploadingProgressBar" [position]="'top'">
+  <div>
+    <p>{{signalrService.progressmessage}}</p>
+    <p-fileUpload *ngIf="showUploadButton" mode="basic" name="restore" [url]="uploadUrl" [accept]="'.bin'" [maxFileSize]="20000000" [auto]="true" [chooseIcon]="'pi pi-upload'" chooseLabel="בחר קובץ"
+                  [customUpload]="true" (uploadHandler)="uploadHandler($event)"></p-fileUpload>
+    <p-button label="סגור" *ngIf="restoreCompleted" (click)="closeRestoreDialog()"></p-button>
+  </div>
+  <ng-template pTemplate="footer">
+    <ng-container *ngIf="showUploadingProgressBar">
+      <div class="">
+        <p-progressSpinner class="progressSpinner-backup-restore"></p-progressSpinner>
+      </div>
+      <div>
+        <p-progressBar [value]="signalrService.progressPercentageComplete" [styleClass]="'progressbar-backup'"></p-progressBar>
+      </div>
+    </ng-container>
+  </ng-template>
+</p-dialog>

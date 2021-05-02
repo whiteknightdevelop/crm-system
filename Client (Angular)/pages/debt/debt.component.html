@@ -1,0 +1,181 @@
+<p-progressBar mode="indeterminate" *ngIf="showProgress"></p-progressBar>
+<p-messages styleClass="error-msg" *ngIf="!pageIsLoaded"></p-messages>
+<div class="grid-container" *ngIf="pageIsLoaded">
+  <p-toast styleClass="toast-msg" key="showSaveChanges" position="top-left"
+           [showTransitionOptions]="'10ms'" [hideTransitionOptions]="'10ms'" [preventOpenDuplicates]="true"></p-toast>
+  <p-messages styleClass="error-msg"></p-messages>
+  <p-confirmDialog header="Confirmation"
+                   acceptButtonStyleClass="confirmDialogAcceptButton" rejectButtonStyleClass="confirmDialogRejectButton"></p-confirmDialog>
+  <div class="content-section introduction">
+    <div class="feature-intro">
+      <h1>{{h1Header}}</h1>
+      <span>{{h1Description}}</span>
+    </div>
+  </div>
+    <div class="content-section implementation">
+      <div class="card page-content-header">
+        <div>
+          <span class="p-d-block file-number-header">מספר תיק: {{debtPage.owner.ownerId}}</span>
+          <span class="p-d-block animal-name-header"><a [routerLink]="['/owner', debtPage.owner.ownerId]" class="text-muted underline">בעלים: {{debtPage.owner.lastName}} {{debtPage.owner.firstName}}</a></span>
+        </div>
+        <div>
+          <p-menubar [model]="menuItems"></p-menubar>
+        </div>
+      </div>
+    </div>
+    <div class="content-main p-formgrid p-grid p-fluid">
+
+      <!-- HERE -->
+      <div class="p-lg-12 p-md-12">
+        <div class="card">
+
+          <!-- Row - TextHeader -->
+          <h5 *ngIf="addNewOpened">הוספת חוב חדש</h5>
+
+          <div class="p-grid p-jc-end" *ngIf="!addNewOpened">
+            <div class="p-col-12">
+              <p-button label="הוסף חוב" icon="pi pi-plus" iconPos="right" class="float-left p-button-sm" (onClick)="showAddNewRow()"></p-button>
+            </div>
+          </div>
+
+          <!-- Row - ADD New -->
+          <form [formGroup]="addNewRowForm">
+            <div class="p-fluid p-formgrid p-grid" *ngIf="addNewOpened">
+
+              <div class="p-field p-lg-2 p-md-2 p-sm-12">
+                <label for="debtDate">תאריך החוב:</label>
+                <input id="debtDate" type="date" class="p-inputtext p-component html5-calendar" pInputText formControlName="debtDate" min="1900-01-01" max="2049-01-01">
+                <small id="debtDate-help" *ngIf="debtDate.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+              </div>
+              <div class="p-field p-lg-2 p-md-2 p-sm-12">
+                <label for="animalName">שם בע"ח:</label>
+                <input id="animalName" type="text" class="p-inputtext p-component"
+                       formControlName="animalName" pInputText>
+                <small id="animalName-help" *ngIf="animalName.invalid && addNewRowForm.touched" class="ng-invalid ng-dirty">שדה חובה!</small>
+              </div>
+              <div class="p-field p-lg-2 p-md-2 p-sm-12">
+                <label for="causeOfDebt">מהות החוב:</label>
+                <input id="causeOfDebt" type="text" class="p-inputtext p-component"
+                       formControlName="causeOfDebt" pInputText>
+                <small id="causeOfDebt-help" *ngIf="causeOfDebt.invalid && addNewRowForm.touched" class="ng-invalid ng-dirty">שדה חובה!</small>
+              </div>
+              <div class="p-field p-lg-2 p-md-2 p-sm-12">
+                <label for="debtAmount">סכום לתשלום:</label>
+                <input id="debtAmount" type="text" class="p-inputtext p-component"
+                       formControlName="debtAmount" pInputText>
+                <small id="debtAmount-help" *ngIf="debtAmount.invalid && addNewRowForm.touched" class="ng-invalid ng-dirty">שדה חובה!</small>
+              </div>
+              <div class="p-field p-lg-2 p-md-2 p-sm-12">
+                <label for="debtPaid">סכום ששולם:</label>
+                <input id="debtPaid" type="text" class="p-inputtext p-component"
+                       formControlName="debtPaid" pInputText>
+                <small id="debtPaid-help" *ngIf="debtPaid.invalid && addNewRowForm.touched" class="ng-invalid ng-dirty">שדה חובה!</small>
+              </div>
+              <div class="p-field p-lg-1 p-md-1 p-sm-12">
+                <label>&nbsp;</label>
+                <button (click)="onAddDebt()" [disabled]="addNewRowForm.invalid"
+                        class="p-button-success p-ripple p-button p-component" pButton pRipple type="button" label="הוסף" icon="pi pi-check" iconPos="right"></button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Row - Table -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field plg-12 p-md-12 p-sm-12">
+              <form [formGroup]="tableForm">
+                <p-table [value]="debtsArray.controls" selectionMode="single" dataKey="value.id" styleClass="p-datatable-striped"
+                         [scrollable]="true" scrollHeight="400px" editMode="row" [rowTrackBy]="trackByFn">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>תאריך החוב</th>
+                      <th>שם בע"ח</th>
+                      <th>מהות החוב</th>
+                      <th>סכום לתשלום</th>
+                      <th>סכום ששולם</th>
+                      <th></th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-item let-editing="editing" let-ri="rowIndex" formArrayName="debtsArray">
+                    <tr [pEditableRow]="item" [formGroup]="item">
+
+                      <td pEditableColumn [pEditableColumnDisabled]="true">
+                        <p-cellEditor>
+                          <ng-template pTemplate="input">
+                            <input type="date" class="p-inputtext p-component html5-calendar" pInputText formControlName="debtDate" min="1900-01-01" max="2049-01-01">
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                            {{tableFormGetArrayControl(ri).controls.debtDate.value | date:'dd/MM/yyyy'}}
+                          </ng-template>
+                        </p-cellEditor>
+                      </td>
+                      <td pEditableColumn [pEditableColumnDisabled]="true">
+                        <p-cellEditor>
+                          <ng-template pTemplate="input">
+                            <input type="text" class="p-inputtext p-component" pInputText formControlName="animalName">
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                            {{tableFormGetArrayControl(ri).controls.animalName.value | shortString: 60}}
+                          </ng-template>
+                        </p-cellEditor>
+                      </td>
+                      <td pEditableColumn [pEditableColumnDisabled]="true">
+                        <p-cellEditor>
+                          <ng-template pTemplate="input">
+                            <input type="text" class="p-inputtext p-component" pInputText formControlName="causeOfDebt">
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                            {{tableFormGetArrayControl(ri).controls.causeOfDebt.value | shortString: 60}}
+                          </ng-template>
+                        </p-cellEditor>
+                      </td>
+                      <td pEditableColumn [pEditableColumnDisabled]="true">
+                        <p-cellEditor>
+                          <ng-template pTemplate="input">
+                            <input type="text" class="p-inputtext p-component" pInputText formControlName="debtAmount">
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                            {{tableFormGetArrayControl(ri).controls.debtAmount.value}}
+                          </ng-template>
+                        </p-cellEditor>
+                      </td>
+                      <td pEditableColumn [pEditableColumnDisabled]="true">
+                        <p-cellEditor>
+                          <ng-template pTemplate="input">
+                            <input type="text" class="p-inputtext p-component" pInputText formControlName="debtPaid">
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                            {{tableFormGetArrayControl(ri).controls.debtPaid.value}}
+                          </ng-template>
+                        </p-cellEditor>
+                      </td>
+                      <td style="text-align:center">
+                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                                (click)="onRowEditInit(item)" class="p-button-rounded p-button-text" title="עריכה"></button>
+                        <button *ngIf="editing" [disabled]="tableFormGetArrayControl(ri).invalid" pButton pRipple type="button"
+                                pSaveEditableRow icon="pi pi-check" (click)="onRowEditSave(item)"
+                                class="p-button-rounded p-button-text p-button-success p-mr-2"  title="שמירת שינויים"></button>
+                        <button *ngIf="editing" [disabled]="tableFormGetArrayControl(ri).invalid" pButton pRipple type="button"
+                                pCancelEditableRow icon="pi pi-times" (click)="onRowEditCancel(item, ri)"
+                                class="p-button-rounded p-button-text p-button-danger" title="מחיקה"></button>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </form>
+              <p-progressBar mode="indeterminate" *ngIf="!tableDataLoaded"></p-progressBar>
+              <app-empty-list-error *ngIf="debtPage.debtsList.length==0"></app-empty-list-error>
+
+            </div>
+          </div>
+
+          <!-- Row - TotalDebtAmount -->
+          <div class="p-fluid p-formgrid p-grid p-jc-center">
+            <div class="p-col-2">
+              <p class="total-dept-title p-d-inline">סה"כ חוב: </p>
+              <p class="total-dept-title ltr-number-fix p-d-inline" [ngClass]="(totalDebtAmount < 0)?'ng-invalid ng-dirty p-text-bold':'positive-amount'">{{totalDebtAmount | absoluteValue}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

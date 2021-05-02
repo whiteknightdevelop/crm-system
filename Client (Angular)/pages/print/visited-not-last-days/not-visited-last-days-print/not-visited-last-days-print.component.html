@@ -1,0 +1,42 @@
+<div class="print-content">
+  <div class="p-grid text-align-center">
+    <div class="p-col-12">
+      <h3>דו"ח בע"ח שלא ביקרו ב-{{numOfDays}} ימים האחרונים</h3>
+    </div>
+  </div>
+  <p-table [value]="visitedOwnersList" styleClass="p-datatable-gridlines rabies-list-by-date-print-table">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 50px;">מס'</th>
+        <th style="width: 100px;">ת.ביקור אחרון</th>
+        <th style="width: 100px;">מס' ימים</th>
+        <th style="width: 150px;">שם הבעלים</th>
+        <th style="width: 200px;">כתובת</th>
+        <th style="width: 100px;">טלפון</th>
+        <th style="width: 100px;">שם</th>
+        <th style="width: 120px;">גזע</th>
+        <th style="width: 120px;">צבע</th>
+        <th style="width: 80px;">מין</th>
+        <th style="width: 100px;">עיקור</th>
+        <th style="width: 150px;">מס' שבב</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i="rowIndex">
+      <tr>
+        <td>{{i+1}}</td>
+        <td>{{item.visitTime | date:'dd/MM/yyyy'}}</td>
+        <td>{{item.numOfDaysPassed}}</td>
+        <td>{{item.lastName}} {{item.firstName}}</td>
+        <td>{{item.street}} {{item.houseNumber}}/{{item.apartmentNumber}}</td>
+        <td>{{item.phone}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.breed}}</td>
+        <td>{{item.color}}</td>
+        <td>{{item.gender}}</td>
+        <td>{{(item.sterilized) ? 'מעוקר' : 'לא'}}</td>
+        <td>{{item.chipNumber}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+

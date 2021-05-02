@@ -1,0 +1,6 @@
+<div *ngIf="!inCreateNewMode">
+  <p-toggleButton (onChange)="toggleShowComment($event)" onLabel="{{btnOnLabel}}" offLabel="{{btnOffLabel}}" [offIcon]="commentNotEmptyIcon" styleClass="my-comment-toggleButton"></p-toggleButton>
+</div>
+<textarea [hidden]="!showComment" id="comment" [rows]="2" [cols]="1" [maxLength]="maxlength" pInputTextarea
+          [value]="commentValue" (input)="onChangetext($event)" [autoResize]="true" spellcheck="false" class="p-mt-3"></textarea>
+

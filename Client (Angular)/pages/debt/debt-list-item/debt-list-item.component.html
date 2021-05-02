@@ -1,0 +1,33 @@
+
+
+<div>
+  <div class="p-d-inline edit-btn">
+    <p-button id="{{'edit'}}" icon="pi pi-pencil" styleClass="p-button-secondary"
+                                 (onClick)="onEditButtonClick($event, debt)"></p-button>
+  </div>
+  <div class="p-d-inline-block">
+    <ng-container *ngIf="!enableEdit">{{debt.debtDate | date:'dd/MM/yyyy'}}</ng-container>
+    <ng-container *ngIf="enableEdit">
+      <input type="text" class="p-inputtext p-component" pInputText [value]="debt.debtDate | date:'dd/MM/yyyy'">
+    </ng-container>
+  </div>
+  <div class="p-d-inline-block">
+    <ng-container *ngIf="!enableEdit">{{debt.animalName | shortString: 60}}</ng-container>
+    <ng-container *ngIf="enableEdit"><input type="text" class="p-inputtext p-component" pInputText [value]="debt.animalName"></ng-container>
+  </div>
+  <div class="p-d-inline-block">
+    <ng-container *ngIf="!enableEdit">{{debt.cause | shortString: 60}}</ng-container>
+    <ng-container *ngIf="enableEdit"><input type="text" class="p-inputtext p-component" pInputText [value]="debt.cause"></ng-container>
+  </div>
+  <div class="p-d-inline-block">
+    <ng-container *ngIf="!enableEdit">{{debt.debtAmount}}</ng-container>
+    <ng-container *ngIf="enableEdit"><input type="text" class="p-inputtext p-component" pInputText [value]="debt.debtAmount"></ng-container>
+  </div>
+  <div class="p-d-inline-block">
+    <ng-container *ngIf="!enableEdit">{{debt.paidAmount}}</ng-container>
+    <ng-container *ngIf="enableEdit"><input type="text" class="p-inputtext p-component" pInputText [value]="debt.paidAmount"></ng-container>
+  </div>
+  <div class="p-d-inline-block delete-btn"><p-button id="{{'delete'}}" icon="pi pi-trash" styleClass="p-button-danger" (onClick)="onDelete($event, debt)"></p-button></div>
+</div>
+
+

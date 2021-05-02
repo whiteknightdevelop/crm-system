@@ -1,0 +1,84 @@
+<p-progressBar mode="indeterminate" *ngIf="showProgress"></p-progressBar>
+<p-messages styleClass="error-msg"></p-messages>
+<p-toast styleClass="toast-msg" key="sendSmsResponseMessage" position="top-left"
+         [showTransitionOptions]="'10ms'" [hideTransitionOptions]="'10ms'" [preventOpenDuplicates]="true"></p-toast>
+<p-confirmDialog header="Confirmation"
+                 acceptButtonStyleClass="confirmDialogAcceptButton" rejectButtonStyleClass="p-button-secondary"></p-confirmDialog>
+<div class="p-col-12 p-md-8">
+  <div class="card card-min-height">
+    <!-- Row - TextHeader -->
+    <form [formGroup]="form">
+      <!-- Row -->
+      <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-3">
+          <label for="from">מתאריך:</label>
+          <input id="from" type="date" class="p-inputtext p-component html5-calendar" pInputText formControlName="from" min="1900-01-01" max="2049-01-01">
+          <small id="from-help" *ngIf="from.invalid && form.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+          <p *ngIf="to.valid && !form.touched">היום</p>
+        </div>
+        <div class="p-field p-col-12 p-md-3">
+          <label for="to">עד תאריך:</label>
+          <input id="to" type="date" class="p-inputtext p-component html5-calendar" pInputText formControlName="to" min="1900-01-01" max="2049-01-01">
+          <small id="to-help" *ngIf="to.invalid && form.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+          <p *ngIf="to.valid && !form.touched">היום + 3 ימים</p>
+        </div>
+        <div class="p-field p-col-12 p-md-2">
+          <label>&nbsp;</label>
+          <p-button label="חפש" icon="pi pi-search" iconPos="left" styleClass="p-button-success"
+                    (click)="searchByDateInterval()" [disabled]="!form.valid"></p-button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<p-progressBar mode="indeterminate" *ngIf="loadingTableData"></p-progressBar>
+<div class="p-grid" *ngIf="showTable">
+  <div class="p-col">
+    <p-card>
+      <p-table [value]="remindersList" styleClass="rabies-list-by-date-print-table">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 50px;">מס'</th>
+            <th style="width: 100px;">תאריך</th>
+            <th style="width: 100px;">שם בעלים</th>
+            <th style="width: 100px;">טלפון</th>
+            <th style="width: 100px;">שם בע"ח</th>
+            <th style="width: 100px;">טיפול</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+          <tr>
+            <td>{{i+1}}</td>
+            <td>{{item.reminderDate | date:'dd/MM/yyyy'}}</td>
+            <td class="item-hover"  pTooltip="פרטי בעלים"(click)="goToOwner(item.ownerId)">{{item.lastName}} {{item.firstName}}</td>
+            <td class="item-hover"  pTooltip="פרטי בעלים"(click)="goToOwner(item.ownerId)"[ngClass]="(isValidMobileNumber(item.phone))?'':'ng-invalid ng-dirty'">
+              {{item.phone}} <span *ngIf="!isValidMobileNumber(item.phone)"> – מספר נייד לא תקין!</span>
+            </td>
+            <td (click)="goToAnimal(item.animalId)" class="item-hover" pTooltip="פרטי בעל־חיים">{{item.name}}</td>
+            <td (click)="goToAnimal(item.animalId)" class="item-hover" pTooltip="פרטי בעל־חיים">{{item.treatment}}</td>
+            <td [ngStyle]="{'color':textColorbyStatus(item)}">
+              <i *ngIf="(item.sentStatus | smsSentStatusIsDelivered)" class="pi pi-check-circle"></i>
+              <i *ngIf="(item.sentStatus | smsSentStatusIsNotDelivered)" class="pi pi-info-circle"></i>
+              {{item.sentStatus | smsSentStatus}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <ng-template pTemplate="footer">
+        <div>
+          <p-button label="שלח מסרונים" styleClass="p-button-danger" icon="pi pi-send"
+                    (click)="sendMessages()" [disabled]="sendMessagesBtnDisabled"></p-button>
+        </div>
+      </ng-template>
+      <app-empty-list-error *ngIf="remindersList.length==0"></app-empty-list-error>
+    </p-card>
+  </div>
+</div>
+<p-dialog header="שליחת הודעות" [(visible)]="displayDialog" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false" [closeOnEscape]="false" [closable]="false">
+  <p class="p-m-0">תהליך קבלת אישור שליחה מחברת הסלולר אורך כ-15 שניות!</p>
+  <p class="p-m-0">יש להמתין לקבלת סטטוס שליחה.</p>
+  <ng-template pTemplate="footer">
+    <p-progressBar [value]="progressBarValue"></p-progressBar>
+  </ng-template>
+</p-dialog>

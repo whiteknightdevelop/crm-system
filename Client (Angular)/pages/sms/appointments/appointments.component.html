@@ -1,0 +1,98 @@
+<p-progressBar mode="indeterminate" *ngIf="showProgress"></p-progressBar>
+<p-messages styleClass="error-msg"></p-messages>
+<p-toast styleClass="toast-msg" key="sendSmsResponseMessage" position="top-left"
+         [showTransitionOptions]="'10ms'" [hideTransitionOptions]="'10ms'" [preventOpenDuplicates]="true"></p-toast>
+<p-confirmDialog header="Confirmation"
+                 acceptButtonStyleClass="confirmDialogAcceptButton" rejectButtonStyleClass="p-button-secondary"></p-confirmDialog>
+<div class="p-col-12 p-md-12">
+  <div class="card card-min-height">
+    <!-- Row - TextHeader -->
+    <h1>תורים (לבטל ClearPullQueue)</h1>
+    <form [formGroup]="appointmentForm">
+      <!-- Row -->
+      <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-2">
+          <label for="date">תאריך:</label>
+          <input id="date" type="date" class="p-inputtext p-component html5-calendar" pInputText formControlName="date" min="1900-01-01" max="2049-01-01">
+          <small id="date-help" *ngIf="date.invalid && appointmentForm.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+        </div>
+        <div class="p-field p-col-12 p-md-2">
+          <label for="time">שעה:</label>
+          <input id="time" type="time" class="p-inputtext p-component html5-calendar" pInputText formControlName="time">
+          <small id="time-help" *ngIf="time.invalid && appointmentForm.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+        </div>
+
+        <div class="p-field p-col-12 p-md-2">
+          <label for="name">שם:</label>
+          <input id="name" type="text" class="p-inputtext p-component" pInputText formControlName="name">
+          <small id="name-help" *ngIf="name.invalid && appointmentForm.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+        </div>
+
+        <div class="p-field p-col-12 p-md-2">
+          <label for="recipient">טלפון:</label>
+          <input id="recipient" type="text" class="p-inputtext p-component" pInputText formControlName="recipient">
+          <small id="recipient-help" *ngIf="recipient.invalid && appointmentForm.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+        </div>
+
+        <div class="p-field p-col-12 p-md-2">
+          <label>&nbsp;</label>
+          <p-button label="הוסף" styleClass="p-button-success"
+                    (click)="addItemToList()" [disabled]="!appointmentForm.valid"></p-button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="p-grid" *ngIf="showTable">
+  <div class="p-col">
+    <p-card>
+      <p-table [value]="appointmentsList" selectionMode="single" styleClass="rabies-list-by-date-print-table">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 50px;">מס'</th>
+            <th style="width: 100px;">תאריך</th>
+            <th style="width: 100px;">שעה</th>
+            <th style="width: 100px;">שם</th>
+            <th style="width: 100px;">טלפון</th>
+            <th style="width: 150px;">הסרה</th>
+            <th style="width: 150px;">סטטוס</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+          <tr>
+            <td>{{i+1}}</td>
+            <td>{{item.date | date:'dd/MM/yyyy'}}</td>
+            <td>{{item.date | date:'HH:mm'}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.recipient}}</td>
+            <td>
+              <p-button styleClass="p-button-danger" icon="pi pi-trash" (click)="deleteItemFromList(item)" [disabled]="sendMessagesBtnDisabled"></p-button>
+            </td>
+            <td [ngStyle]="{'color':textColorbyStatus(item)}">
+              <i *ngIf="(item.sentStatus | smsSentStatusIsDelivered)" class="pi pi-check-circle"></i>
+              <i *ngIf="(item.sentStatus | smsSentStatusIsNotDelivered)" class="pi pi-info-circle"></i>
+              {{item.sentStatus | smsSentStatus}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+            <ng-template pTemplate="footer">
+              <div>
+                <p-button label="שלח מסרונים" styleClass="p-button-danger" icon="pi pi-send"
+                          (click)="sendMessages()" [disabled]="sendMessagesBtnDisabled"></p-button>
+              </div>
+              <div class="text-align-center" *ngIf="showInforuWebsiteUrl">
+              </div>
+            </ng-template>
+      <app-empty-list-error *ngIf="appointmentsList.length==0"></app-empty-list-error>
+    </p-card>
+  </div>
+</div>
+<p-dialog header="שליחת הודעות" [(visible)]="displayDialog" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false" [closeOnEscape]="false" [closable]="false">
+  <p class="p-m-0">תהליך קבלת אישור שליחה מחברת הסלולר אורך כ-15 שניות!</p>
+  <p class="p-m-0">יש להמתין לקבלת סטטוס שליחה.</p>
+  <ng-template pTemplate="footer">
+    <p-progressBar [value]="progressBarValue"></p-progressBar>
+  </ng-template>
+</p-dialog>

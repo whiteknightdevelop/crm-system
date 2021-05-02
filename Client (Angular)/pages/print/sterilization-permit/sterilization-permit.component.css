@@ -1,0 +1,122 @@
+@media print{@page {size: portrait}}
+
+p {
+  margin: 0;
+}
+
+label {
+  font-weight: bold;
+}
+
+hr {
+  border-top: 1px solid black;
+  margin: 0px;
+}
+
+.confirmation-sign {
+  text-align: center;
+  margin: 100px 60px 0px 60px;
+}
+
+.confirmation-sign p {
+
+}
+
+.header-logo-col{
+  text-align: left;
+}
+
+.header-logo{
+  height: 140px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 10px;
+}
+
+.footer .address {
+  color: #00804a;
+}
+
+.footer .address span{
+  color: #a24131;
+}
+
+.footer .website {
+  direction: ltr;
+  color: #00804a;
+}
+
+.footer .website .pi-facebook {
+  color: #a24131;
+}
+
+table {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.report-date{
+  margin-bottom: 10px;
+}
+
+.report-title {
+  text-align: center;
+  margin-top: 150px;
+  font-weight: bold;
+}
+
+.field-title {
+  width: 110px;
+  font-weight: bold;
+}
+
+.field-title-right {
+  width: 110px;
+  font-weight: bold;
+  text-align: right;
+}
+
+.field-title-center {
+  width: 90px;
+  font-weight: bold;
+  text-align: right;
+}
+
+.field-title-left {
+  width: 130px;
+  font-weight: bold;
+  text-align: right;
+}
+
+.field-value {
+  width: 130px;
+  text-align: right;
+}
+
+.table-data th {
+  width: 110px;
+}
+.table-data td {
+  width: 50px;
+}
+
+hr {
+  border-top: 1px solid black;
+}
+
+.no-margin p, .no-margin hr {
+  margin: 0px;
+}
+
+.no-margin hr {
+  border-top: 2px solid black;
+}
+
+.form-container {
+  margin-top: 20px;
+}
+
+

@@ -1,0 +1,213 @@
+<p-progressBar mode="indeterminate" *ngIf="showProgress"></p-progressBar>
+<p-messages styleClass="error-msg" *ngIf="!pageIsLoaded"></p-messages>
+<div class="grid-container" *ngIf="pageIsLoaded">
+  <p-toast styleClass="toast-msg" key="showSaveChanges" position="top-left"
+           [showTransitionOptions]="'10ms'" [hideTransitionOptions]="'10ms'" [preventOpenDuplicates]="true"></p-toast>
+  <p-messages styleClass="error-msg"></p-messages>
+  <p-confirmDialog header="Confirmation"
+                   acceptButtonStyleClass="confirmDialogAcceptButton" rejectButtonStyleClass="confirmDialogRejectButton"></p-confirmDialog>
+  <div class="content-section introduction">
+    <div class="feature-intro">
+      <h1>{{h1Header}}</h1>
+      <span>{{h1Description}}</span>
+    </div>
+    <div *ngIf="inCreateNewMode">
+      <button (click)="onAdd()" [disabled]="!visitDetailsForm.valid"
+              class="p-button-success p-ripple p-button p-component" pButton pRipple type="button" label="שמור" icon="pi pi-check" iconPos="right"></button>
+    </div>
+  </div>
+  <form [formGroup]="visitDetailsForm">
+    <div class="content-section implementation" *ngIf="!inCreateNewMode">
+      <div class="card page-content-header">
+        <div>
+          <h3>{{this.visitDetailsForm.value.visitTime | date:'dd/MM/yyyy'}}</h3>
+          <span class="doctor-name-header" *ngIf="visitPage">רופא: {{visitPage.visit.user.lastName}} {{visitPage.visit.user.firstName}}</span>
+          <span class="p-d-block"><a [routerLink]="['/animal', visitPage.animal.animalId]" class="text-muted underline">בע&quot;ח:  {{visitPage.animal.name}}</a></span>
+          <span class="animal-name-header"><a [routerLink]="['/owner', visitPage.owner.ownerId]" class="text-muted underline">בעלים: {{visitPage.owner.lastName}} {{visitPage.owner.firstName}}</a></span>
+        </div>
+        <div>
+          <p-menubar [model]="menuItems"></p-menubar>
+        </div>
+      </div>
+    </div>
+    <div class="content-main p-formgrid p-grid p-fluid">
+      <div class="p-lg-4 p-md-12">
+        <div class="card">
+          <!-- Row - TextHeader -->
+          <h5>פרטים</h5>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-col-12 p-lg-6 p-md-4">
+              <label for="visitTime">ת. ביקור:</label>
+              <input id="visitTime" type="date" class="p-inputtext p-component html5-calendar" pInputText formControlName="visitTime" min="1900-01-01" max="2049-01-01">
+              <small id="visitTime-help" *ngIf="visitTime.invalid" class="ng-invalid ng-dirty">שגיאה!</small>
+            </div>
+            <div class="p-col-12 p-lg-6 p-md-8">
+              <div class="p-grid p-field">
+                <div class="p-col-4">
+                  <label for="weight">משקל:</label>
+                  <input id="weight" type="text" formControlName="weight" class="p-inputnumber-input p-inputtext p-component p-filled">
+                  <small id="weight-help" *ngIf="weight.invalid" class="ng-invalid ng-dirty">שגיאה!</small>
+                </div>
+                <div class="p-col-4">
+                  <label for="temperature">חום:</label>
+                  <input id="temperature" type="text" formControlName="temperature" class="p-inputnumber-input p-inputtext p-component p-filled">
+                  <small id="temperature-help" *ngIf="temperature.invalid" class="ng-invalid ng-dirty">שגיאה!</small>
+                </div>
+                <div class="p-col-4">
+                  <label for="pulse">דופק:</label>
+                  <input id="pulse" type="text" formControlName="pulse" class="p-inputnumber-input p-inputtext p-component p-filled">
+                  <small id="pulse-help" *ngIf="pulse.invalid" class="ng-invalid ng-dirty">שגיאה!</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-12">
+              <label for="cause">סיבת ביקור / תלונת לקוח:</label>
+              <textarea id="cause" pInputTextarea formControlName="cause" [rows]="1" [cols]="30" pInputTextarea [autoResize]="true"
+                        [ngClass]="(cause.invalid)?'ng-invalid ng-dirty':''" maxlength="2000" spellcheck="false"></textarea>
+              <small id="cause-help" *ngIf="cause.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-12">
+              <label for="symptoms">בדיקה פיזיקלית / ממצאים קליניים:</label>
+              <textarea id="symptoms" pInputTextarea formControlName="symptoms" [rows]="1" [cols]="30" pInputTextarea [autoResize]="true"
+                        [ngClass]="(symptoms.invalid)?'ng-invalid ng-dirty':''" maxlength="2000" spellcheck="false"></textarea>
+              <small id="symptoms-help" *ngIf="symptoms.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-12">
+              <label for="labResults">תוצאות מעבדה:</label>
+              <textarea id="labResults" pInputTextarea formControlName="labResults" [rows]="1" [cols]="30" pInputTextarea [autoResize]="true"
+                        [ngClass]="(labResults.invalid)?'ng-invalid ng-dirty':''" maxlength="2000" spellcheck="false"></textarea>
+              <small id="labResults-help" *ngIf="labResults.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+
+          <!-- Row - Comment -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-12">
+              <label for="comment">הערה:</label>
+              <app-my-comment id="comment" formControlName="comment" [labelText]="'הערה:'" [btnOnLabel]="'הסתר הערה'" [btnOffLabel]="'הצג הערה'" [maxlength]="1000"></app-my-comment>
+            </div>
+          </div>
+        </div>
+        <div class="card p-mt-4" *ngIf="!inCreateNewMode">
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-col-12 p-md-12">
+              <app-preventive-treatment [allPreventiveTreatments]="visitPage.lists.allPreventiveTreatmentsList"
+                                        [visitPreventiveTreatments]="visitPage.preventiveTreatmentsList"
+                                        (addNewPreventiveTreatmentList)="addNewPreventiveTreatment($event)"
+                                        (deleteSelectedPreventiveTreatment)="deleteSelectedPreventiveTreatment($event)"></app-preventive-treatment>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-lg-4 p-md-12">
+        <div class="card">
+
+          <!-- Row - TextHeader -->
+          <h5>אבחונים</h5>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-col-12 p-md-12">
+              <app-pick-from-list-textarea formControlName="diagnosis1"
+                                           [componentType]="diagnosisListComponent" [labelText]="'אבחון 1:'"
+                                           [title]="'הוספת אבחנה'" [maxlength]="280" [list]="visitPage.lists.diagnosisList"></app-pick-from-list-textarea>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-col-12 p-md-12">
+              <app-pick-from-list-textarea formControlName="diagnosis2" [componentType]="diagnosisListComponent" [labelText]="'אבחון 2:'"
+                                           [title]="'הוספת אבחנה'" [maxlength]="280" [list]="visitPage.lists.diagnosisList"></app-pick-from-list-textarea>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-col-12 p-md-12">
+              <app-pick-from-list-textarea formControlName="diagnosis3" [componentType]="diagnosisListComponent" [labelText]="'אבחון 3:'"
+                                           [title]="'הוספת אבחנה'" [maxlength]="280" [list]="visitPage.lists.diagnosisList"></app-pick-from-list-textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-lg-4 p-md-12">
+        <div class="card">
+
+          <!-- Row - TextHeader -->
+          <h5>טיפולים</h5>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-col-12 p-md-12">
+              <app-pick-from-list-textarea formControlName="treatment1" [componentType]="treatmentListComponent"
+                                           [labelText]="'טיפול 1:'" [title]="'הוספת טיפול'"
+                                           [maxlength]="280" [list]="visitPage.lists.treatmentsList"></app-pick-from-list-textarea>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-col-12 p-md-12">
+              <app-pick-from-list-textarea formControlName="treatment2" [componentType]="treatmentListComponent"
+                                           [labelText]="'טיפול 2:'" [title]="'הוספת טיפול'"
+                                           [maxlength]="280" [list]="visitPage.lists.treatmentsList"></app-pick-from-list-textarea>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-col-12 p-md-12">
+              <app-pick-from-list-textarea formControlName="treatment3" [componentType]="treatmentListComponent"
+                                           [labelText]="'טיפול 3:'" [title]="'הוספת טיפול'"
+                                           [maxlength]="280" [list]="visitPage.lists.treatmentsList"></app-pick-from-list-textarea>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-col-12 p-md-12">
+              <app-pick-from-list-textarea formControlName="treatment4" [componentType]="treatmentListComponent"
+                                           [labelText]="'טיפול 4:'" [title]="'הוספת טיפול'"
+                                           [maxlength]="280" [list]="visitPage.lists.treatmentsList"></app-pick-from-list-textarea>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-col-12 p-md-12">
+              <app-pick-from-list-textarea formControlName="treatment5" [componentType]="treatmentListComponent"
+                                           [labelText]="'טיפול 5:'" [title]="'הוספת טיפול'"
+                                           [maxlength]="280" [list]="visitPage.lists.treatmentsList"></app-pick-from-list-textarea>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-col-12 p-md-12">
+              <app-pick-from-list-textarea formControlName="treatment6" [componentType]="treatmentListComponent"
+                                           [labelText]="'טיפול 6:'" [title]="'הוספת טיפול'"
+                                           [maxlength]="280" [list]="visitPage.lists.treatmentsList"></app-pick-from-list-textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

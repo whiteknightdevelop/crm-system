@@ -1,0 +1,130 @@
+<p-progressBar mode="indeterminate" *ngIf="showProgress"></p-progressBar>
+<p-messages styleClass="error-msg" *ngIf="!pageIsLoaded"></p-messages>
+<div class="grid-container" *ngIf="pageIsLoaded">
+  <p-toast styleClass="toast-msg" key="showSaveChanges" position="top-left"
+           [showTransitionOptions]="'10ms'" [hideTransitionOptions]="'10ms'" [preventOpenDuplicates]="true"></p-toast>
+  <p-messages styleClass="error-msg"></p-messages>
+  <p-confirmDialog header="Confirmation"
+                   acceptButtonStyleClass="confirmDialogAcceptButton" rejectButtonStyleClass="confirmDialogRejectButton"></p-confirmDialog>
+  <div class="content-section introduction">
+    <div class="feature-intro">
+      <h1>{{h1Header}}</h1>
+      <span>{{h1Description}}</span>
+    </div>
+  </div>
+  <form [formGroup]="prescriptionForm">
+    <div class="content-section implementation">
+      <div class="card page-content-header">
+        <div>
+          <h3>תאריך ביקור: {{prescriptionPage.visit.visitTime | date:'dd/MM/yyyy'}}</h3>
+          <span class="file-number-header">מספר בע"ח: {{prescriptionPage.animal.animalId}}</span>
+          <span class="p-d-block"><a [routerLink]="['/animal', prescriptionPage.animal.animalId]" class="text-muted underline">בע&quot;ח:  {{prescriptionPage.animal.name}}</a></span>
+          <span class="animal-name-header"><a [routerLink]="['/owner', prescriptionPage.owner.ownerId]" class="text-muted underline">בעלים: {{prescriptionPage.owner.lastName}} {{prescriptionPage.owner.firstName}}</a></span>
+        </div>
+        <div>
+          <p-menubar [model]="menuItems"></p-menubar>
+        </div>
+      </div>
+    </div>
+    <div class="content-main p-formgrid p-grid p-fluid">
+      <div class="p-lg-12 p-md-12">
+        <div class="card">
+
+          <!-- Row - TextHeader -->
+          <h5 *ngIf="addNewOpened">הוספת תרופה חדשה</h5>
+
+          <div class="p-grid p-jc-end" *ngIf="!addNewOpened">
+            <div class="p-col-12">
+              <p-button label="הוסף תרופה" icon="pi pi-plus" iconPos="right" class="float-left p-button-sm" (onClick)="showAddNewRow()"></p-button>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid" *ngIf="addNewOpened">
+
+            <div class="p-field p-lg-2 p-md-2 p-sm-12">
+              <label for="drugName">שם תרופה:</label>
+              <p-dropdown id="drugName" [options]="drugsList" formControlName="drugName" placeholder="בחר תרופה"
+                          optionLabel="drugName" [showClear]="false" [virtualScroll]="true" [itemSize]="30"
+                          [filter]="true" filterBy="drugName" emptyFilterMessage="אין תוצאה"
+                          [ngClass]="(drugName.invalid)?'ng-invalid ng-dirty':''" class="prescription-dropdown"></p-dropdown>
+              <small id="drugName-help" *ngIf="drugName.invalid && prescriptionForm.touched" class="ng-invalid ng-dirty">שדה חובה!</small>
+            </div>
+            <div class="p-field p-lg-2 p-md-2 p-sm-12">
+              <label for="drugDosage">מינון:</label>
+              <input id="drugDosage" type="text" class="p-inputtext p-component"
+                     formControlName="drugDosage" pInputText>
+              <small id="drugDosage-help" *ngIf="drugDosage.invalid && prescriptionForm.touched" class="ng-invalid ng-dirty">שדה חובה!</small>
+            </div>
+
+            <div class="p-field p-lg-2 p-md-2 p-sm-12">
+              <label for="drugFrequency">תדירות:</label>
+              <p-dropdown id="drugFrequency" [options]="frequencysList" formControlName="drugFrequency" placeholder="בחר תדירות"
+                          optionLabel="drugFrequency" [showClear]="false"
+                          [filter]="true" filterBy="drugFrequency" emptyFilterMessage="אין תוצאה"
+                          [ngClass]="(drugFrequency.invalid)?'ng-invalid ng-dirty':''" class="prescription-dropdown"></p-dropdown>
+              <small id="drugFrequency-help" *ngIf="drugFrequency.invalid && prescriptionForm.touched" class="ng-invalid ng-dirty">שדה חובה!</small>
+            </div>
+
+            <div class="p-field p-lg-2 p-md-2 p-sm-12">
+              <label for="drugPeriod">פרק זמן:</label>
+              <p-dropdown id="drugPeriod" [options]="periodsList" formControlName="drugPeriod" placeholder="בחר פרק זמן"
+                          optionLabel="drugPeriod" [showClear]="false"
+                          [filter]="true" filterBy="drugPeriod" emptyFilterMessage="אין תוצאה"
+                          [ngClass]="(drugPeriod.invalid)?'ng-invalid ng-dirty':''" class="prescription-dropdown"></p-dropdown>
+              <small id="drugPeriod-help" *ngIf="drugPeriod.invalid && prescriptionForm.touched" class="ng-invalid ng-dirty">שדה חובה!</small>
+            </div>
+
+            <div class="p-field p-lg-2 p-md-2 p-sm-12">
+              <label for="drugComment">הערה:</label>
+              <input id="drugComment" type="text" class="p-inputtext p-component"
+                     formControlName="drugComment" pInputText [ngClass]="(drugComment.invalid)?'ng-invalid ng-dirty':''">
+              <small id="drugComment-help" *ngIf="drugComment.invalid && prescriptionForm.touched" class="ng-invalid ng-dirty">שדה חובה!</small>
+            </div>
+
+            <div class="p-field p-lg-1 p-md-1 p-sm-12">
+              <label>&nbsp;</label>
+              <button (click)="onAddPrescription()" [disabled]="prescriptionForm.invalid"
+                      class="p-button-success p-ripple p-button p-component" pButton pRipple type="button" label="הוסף" icon="pi pi-check" iconPos="right"></button>
+            </div>
+
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field plg-12 p-md-12 p-sm-12">
+
+              <table class="fixed_header pr-re-table">
+                <thead>
+                <tr class="pr-re-table-tr">
+                  <th>שם תרופה</th>
+                  <th>מינון</th>
+                  <th>תדירות</th>
+                  <th>פרק זמן</th>
+                  <th>הערה</th>
+                  <th class="delete-btn">מחיקה</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let prescription of prescriptionPage.prescriptionsList; let i = index" class="pr-re-table-tr"
+                    id="{{prescription.prescriptionId}}">
+                  <td id="{{'drugName' + i}}">{{prescription.drugName | shortString: 60}}</td>
+                  <td>
+                    {{prescription.drugDosage | shortString: 60}}
+                  </td>
+                  <td>{{prescription.drugFrequency | shortString: 60}}</td>
+                  <td>{{prescription.drugPeriod | shortString: 60}}</td>
+                  <td>{{prescription.drugComment | shortString: 60}}</td>
+                  <td class="delete-btn"><p-button icon="pi pi-trash" styleClass="p-button-danger" (onClick)="onDelete($event, prescription)"></p-button></td>
+                </tr>
+                </tbody>
+              </table>
+              <p-progressBar mode="indeterminate" *ngIf="!tableDataLoaded"></p-progressBar>
+              <app-empty-list-error *ngIf="prescriptionPage.prescriptionsList.length==0"></app-empty-list-error>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

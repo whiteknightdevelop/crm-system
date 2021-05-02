@@ -1,0 +1,11 @@
+<div class="p-fluid p-grid p-formgrid">
+  <div class="p-field p-col-10">
+    <label for="pickfromlisttextarea" class="font-weight-semibold">{{labelText}}</label>
+    <textarea [(ngModel)]="inputValue" (input)="onChangetext($event)" id="pickfromlisttextarea" rows="1" [cols]="30"
+              pInputTextarea [autoResize]="true" aria-describedby="pickfromlisttextarea-help"
+              [maxLength]="maxlength" spellcheck="false"></textarea>
+  </div>
+  <div class="p-field p-col-2">
+    <p-button icon="pi pi-plus" styleClass="pick-from-list-add-button" class="addbutton" class="p-inputtext-sm" (click)="showDialog()"></p-button>
+  </div>
+</div>

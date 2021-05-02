@@ -1,0 +1,65 @@
+<p-progressBar mode="indeterminate" *ngIf="showProgress"></p-progressBar>
+<p-messages styleClass="error-msg"></p-messages>
+<p-toast styleClass="toast-msg" key="showSaveChanges" position="top-left"
+         [showTransitionOptions]="'10ms'" [hideTransitionOptions]="'10ms'" [preventOpenDuplicates]="true"></p-toast>
+<form [formGroup]="followupAllForm">
+  <div class="p-col-12 p-md-4">
+    <div class="card card-min-height">
+
+      <!-- Row - TextHeader -->
+      <h1>רשימת מעקב</h1>
+
+      <!-- Row -->
+      <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-6">
+          <label for="fromDate">מתאריך:</label>
+          <input id="fromDate" type="date" class="p-inputtext p-component html5-calendar" pInputText formControlName="fromDate" min="1900-01-01" max="2049-01-01">
+          <small id="fromDate-help" *ngIf="fromDate.invalid && followupAllForm.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+        </div>
+        <div class="p-field p-col-12 p-md-4">
+          <label>&nbsp;</label>
+          <p-button label="בצע" iconPos="left" styleClass="p-button-success"
+                    (click)="getFollowupAllByDate()" [disabled]="!followupAllForm.valid"></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="p-grid" *ngIf="showTable">
+  <div class="p-col">
+    <p-card>
+      <p-table [value]="followupAllList" selectionMode="single" styleClass="rabies-list-by-date-print-table">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 50px;">מס'</th>
+            <th style="width: 100px;">ת.מעקב</th>
+            <th style="width: 100px;">סיבת מעקב</th>
+            <th style="width: 100px;">שם בעלים</th>
+            <th style="width: 150px;">טלפון</th>
+            <th style="width: 200px;">פרטי בע"ח</th>
+            <th style="width: 20px;">טופל</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-i="rowIndex">
+          <tr class="mouse-pointer" [ngClass]="getClassFromDateIfToday(item.followUp.date)">
+            <td>{{i+1}}</td>
+            <td (click)="goToFollowUp(item.followUp.animalId)" class="item-hover" pTooltip="פרטי מעקב">{{item.followUp.date | date:'dd/MM/yyyy'}}</td>
+            <td (click)="goToFollowUp(item.followUp.animalId)" class="item-hover" pTooltip="פרטי מעקב">{{item.followUp.cause}}</td>
+            <td (click)="goToOwner(item.owner.ownerId)" class="item-hover" pTooltip="פרטי בעלים">{{item.owner.lastName}} {{item.owner.firstName}}</td>
+            <td (click)="goToOwner(item.owner.ownerId)" class="item-hover" pTooltip="פרטי בעלים">{{item.owner.phone}}</td>
+            <td (click)="goToAnimal(item.followUp.animalId)" class="item-hover" pTooltip="פרטי בעל־חיים">{{item.animal.type}}: {{item.animal.name}}</td>
+            <td>
+              <p-checkbox [value]="item.followUp.status" ngDefaultControl [(ngModel)]="item.followUp.status"
+                          (ngModelChange)="followupStatusCheckboxChange(item.followUp, $event)"
+                          [binary]="true"></p-checkbox>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <app-empty-list-error *ngIf="followupAllList.length==0"></app-empty-list-error>
+    </p-card>
+  </div>
+</div>
+
+
+

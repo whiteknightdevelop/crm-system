@@ -1,0 +1,18 @@
+<span class="p-input-icon-left p-mt-2 p-mb-2">
+  <i class="pi pi-search"></i>
+  <input type="text" pInputText placeholder="חיפוש" class="p-inputtext p-component" (input)="searchInputOnChange($event)"/>
+</span>
+<p-divider></p-divider>
+<p-table [value]="filteredDiagnosesList" [scrollable]="true" [virtualScroll]="true" [virtualRowHeight]="30" scrollHeight="400px"
+         selectionMode="single" (onRowSelect)="onRowSelect($event)" *ngIf="filteredDiagnosesList.length!=0">
+  <ng-template pTemplate="header">
+  </ng-template>
+  <ng-template pTemplate="body" let-diagnosis let-rowIndex="rowIndex">
+    <tr [pSelectableRow]="diagnosis">
+      <td class="diagnosis">{{diagnosis.name}}</td>
+    </tr>
+  </ng-template>
+</p-table>
+<app-empty-list-error *ngIf="filteredDiagnosesList.length==0"></app-empty-list-error>
+
+

@@ -1,0 +1,177 @@
+<p-progressBar mode="indeterminate" *ngIf="showProgress"></p-progressBar>
+<p-messages styleClass="error-msg" *ngIf="!pageIsLoaded"></p-messages>
+<div class="grid-container p-d-print-none" *ngIf="pageIsLoaded">
+  <p-toast styleClass="toast-msg" key="showSaveChanges" position="top-left"
+           [showTransitionOptions]="'10ms'" [hideTransitionOptions]="'10ms'" [preventOpenDuplicates]="true"></p-toast>
+  <p-messages styleClass="error-msg"></p-messages>
+  <p-confirmDialog header="Confirmation"
+                   acceptButtonStyleClass="confirmDialogAcceptButton" rejectButtonStyleClass="p-button-secondary"></p-confirmDialog>
+  <div class="content-section introduction">
+    <div class="feature-intro">
+      <h1>{{h1Header}}</h1>
+      <span>{{h1Description}}</span>
+    </div>
+    <div *ngIf="inCreateNewMode">
+      <button (click)="onAdd()" [disabled]="!animalDetailsForm.valid"
+              class="p-button-success p-ripple p-button p-component" pButton pRipple type="button" label="שמור" icon="pi pi-check" iconPos="right"></button>
+    </div>
+  </div>
+  <form [formGroup]="animalDetailsForm">
+    <div class="content-section implementation" *ngIf="!inCreateNewMode">
+      <div class="card page-content-header">
+        <div>
+          <span class="file-number-header">מספר בע"ח: {{animalPage.animal.animalId}}  – (ת.פתיחה: {{animalPage.animal.createdDate | date:'dd/MM/yyyy'}})</span>
+          <span class="doctor-name-header">רופא: {{animalPage.animal.user?.lastName}} {{animalPage.animal.user?.firstName}}</span>
+          <div class="p-grid p-jc-start">
+            <div class="p-col-3 p-md-3">
+              <img src="{{animalPage.animal.type | animalImgUrlByType}}" class="avatar-img">
+            </div>
+            <div class="p-col-6 p-md-6">
+              <span class="animal-name-title font-weight-semibold">{{name.value}}</span>
+              <span class="animal-name-header"><a [routerLink]="['/owner', animalPage.animalOwner.ownerId]" class="text-muted underline">בעלים: {{animalPage.animalOwner.lastName}} {{animalPage.animalOwner.firstName}}</a></span>
+            </div>
+            <div class="p-col-3 p-md-3">
+              <p-toggleButton formControlName="active" onLabel="פעיל" offLabel="לא פעיל" styleClass="togglebutton-active"></p-toggleButton>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p-menubar [model]="menuItems"></p-menubar>
+        </div>
+      </div>
+    </div>
+    <div class="content-main p-formgrid p-grid p-fluid">
+      <div class="p-col-12 p-md-4">
+        <div class="card card-details">
+
+          <!-- Row - TextHeader -->
+          <h5>פרטים</h5>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-6">
+              <label for="name">שם:</label>
+              <input id="name" type="text" class="p-inputtext p-component"
+                     formControlName="name" pInputText>
+              <small id="name-help" *ngIf="name.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+            <div class="p-field p-col-12 p-md-6">
+              <label for="dateOfBirth">ת. לידה:</label>
+              <input id="dateOfBirth" type="date" class="p-inputtext p-component html5-calendar" pInputText formControlName="dateOfBirth" min="1900-01-01" max="2049-01-01">
+              <small id="dateOfBirth-help" *ngIf="dateOfBirth.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+              <p *ngIf="showAge" class="font-weight-semibold age">גיל: {{ageYears}} שנים ו-{{ageMonths}} חודשים</p>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-6">
+              <label for="type">סוג:</label>
+              <p-dropdown id="type" [options]="typesList" formControlName="type" placeholder="בחר סוג"
+                          optionLabel="type" [showClear]="false"
+                          [filter]="true" filterBy="type" emptyFilterMessage="אין תוצאה"
+                          (onChange)="onTypeChange()"></p-dropdown>
+              <small id="type-help" *ngIf="type.invalid && animalDetailsForm.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+            <div class="p-field p-col-12 p-md-6">
+              <label for="gender">מין:</label>
+              <p-dropdown id="gender" [options]="gendersList" formControlName="gender" placeholder="בחר מין"
+                          optionLabel="gender" [showClear]="false"></p-dropdown>
+              <small id="gender-help" *ngIf="gender.invalid && animalDetailsForm.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-6">
+              <label for="breedName">גזע:</label>
+              <p-dropdown id="breedName" [options]="breedsListFiltered" formControlName="breedName" placeholder="בחר גזע"
+                          [filter]="true" filterBy="breedName" emptyFilterMessage="אין תוצאה"
+                          optionLabel="breedName" [showClear]="false"></p-dropdown>
+              <!--                          [virtualScroll]="true" [itemSize]="30"-->
+              <small id="breed-help" *ngIf="breedName.invalid && animalDetailsForm.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+            <div class="p-field p-col-12 p-md-6">
+              <label for="color">צבע:</label>
+              <p-dropdown id="color" [options]="colorsList" formControlName="color" placeholder="בחר צבע"
+                          optionLabel="color" [showClear]="false"
+                          [filter]="true" filterBy="color" emptyFilterMessage="אין תוצאה"
+                          [virtualScroll]="true" [itemSize]="30"></p-dropdown>
+              <small id="color-help" *ngIf="color.invalid && animalDetailsForm.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="p-col-12 p-md-4">
+        <div class="card card-sterilization">
+
+          <!-- Row - TextHeader -->
+          <h5>עיקור / שבב / הערה</h5>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-8">
+              <div class="p-formgrid p-grid">
+                <div class="p-col-2">
+                  <label for="sterilized" class="p-d-block">ע/ס:</label>
+                  <p-toggleButton id="sterilized" formControlName="sterilized"
+                                  onIcon="pi pi-check" offIcon="pi pi-times"
+                                  styleClass="togglebutton-sterilized" (click)="sterilizedToggleButton()"></p-toggleButton>
+                </div>
+                <div class="p-col-10">
+                  <label for="dateOfSterilization">ת. ע/ס:</label>
+                  <input id="dateOfSterilization" type="date" class="p-inputtext p-component html5-calendar" pInputText formControlName="dateOfSterilization" min="1900-01-01" max="2049-01-01">
+                  <small id="dateOfSterilization-help" *ngIf="dateOfSterilization.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+                </div>
+              </div>
+            </div>
+            <div class="p-field p-col-12 p-md-6"></div>
+          </div>
+
+          <!-- Row -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-6">
+              <label for="chipNumber">מספר שבב:</label>
+              <input id="chipNumber" type="text" class="p-inputtext p-component"
+                     formControlName="chipNumber" pInputText [ngClass]="(chipNumber.invalid)?'ng-invalid ng-dirty':''">
+              <small id="chipNumber-help" *ngIf="chipNumber.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+            <div class="p-field p-col-12 p-md-6">
+              <label for="chipMarkDate">ת. שבב:</label>
+              <input id="chipMarkDate" type="date" class="p-inputtext p-component html5-calendar" pInputText formControlName="chipMarkDate" min="1900-01-01" max="2049-01-01">
+              <small id="chipMarkDate-help" *ngIf="chipMarkDate.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+
+          <!-- Row - Comment -->
+          <div class="p-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-12">
+              <label for="comment">הערה:</label>
+              <app-my-comment id="comment" formControlName="comment" [labelText]="'הערה:'" [btnOnLabel]="'הסתר הערה'" [btnOffLabel]="'הצג הערה'"
+                              [inCreateNewMode]="inCreateNewMode" [maxlength]="500"></app-my-comment>
+              <small id="comment-help" *ngIf="comment.invalid" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-col-12 p-md-4" *ngIf="!inCreateNewMode">
+        <div class="card card-reminder-list">
+          <app-preventive-reminder-list [list]="preventiveRemindersList" [remindersList]="remindersList" [inputAnimal]="animalPage.animal"
+                                        (showSaveChangesMsg)="showSaveChangesMsg()"></app-preventive-reminder-list>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Visit List -->
+    <div class="content-main p-formgrid p-grid p-fluid" *ngIf="!inCreateNewMode">
+      <div class="p-col-12 p-md-12">
+        <div class="card">
+          <app-visit-list [list]="animalPage.visitsList" [inputAnimal]="animalPage.animal"></app-visit-list>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

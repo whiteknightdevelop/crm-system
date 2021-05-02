@@ -1,0 +1,84 @@
+<div class="print-content">
+  <div class="p-grid text-align-center">
+    <div class="p-col-12">
+      <h3>{{reportH1Title}}</h3>
+    </div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 95px;"><label>שם הבעלים:</label></div>
+    <div class="p-col-fixed" style="width: 180px;"><p>{{animalPage.animalOwner.lastName}} {{animalPage.animalOwner.firstName}}</p></div>
+    <div class="p-col-fixed" style="width: 80px;"><label>סוג:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.type}}</p></div>
+    <div class="p-col-fixed" style="width: 95px;"><label>מין:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.gender}}</p></div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 95px;"><label>ת.ז:</label></div>
+    <div class="p-col-fixed" style="width: 180px;"><p>{{animalPage.animalOwner.idNumber}}</p></div>
+    <div class="p-col-fixed" style="width: 80px;"><label>שם בע"ח:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.name}}</p></div>
+    <div class="p-col-fixed" style="width: 95px;"><label>מס' שבב:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.chipNumber | shortString: 60}}</p></div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 95px;"><label>כתובת:</label></div>
+    <div class="p-col-fixed" style="width: 180px;"><p>{{animalPage.animalOwner.street}} {{animalPage.animalOwner.houseNumber}}/{{animalPage.animalOwner.apartmentNumber}}, {{animalPage.animalOwner.city}}</p></div>
+    <div class="p-col-fixed" style="width: 80px;"><label>גזע:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.breed}}</p></div>
+    <div class="p-col-fixed" style="width: 95px;"><label>תאריך לידה:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.dateOfBirth | date:"dd/MM/yyyy"}}</p></div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 95px;"><label>טלפון:</label></div>
+    <div class="p-col-fixed" style="width: 180px;"><p>{{animalPage.animalOwner.phone}}</p></div>
+    <div class="p-col-fixed" style="width: 80px;"><label>צבע:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.color}}</p></div>
+  </div>
+  <div class="p-grid p-mt-2">
+    <div class="p-col">
+      <p>הרני לאשר כי בתאריך <span class="form-value"><b>{{currentDate | date:"dd/MM/yyyy"}} </b></span>חיסנתי את בע"ח שפרטיו רשומים מעלה בחיסון נגד מחלת הכלבת.</p>
+    </div>
+  </div>
+  <div class="p-grid confirmation-sign">
+    <div class="p-col-4">
+      <p>{{user.lastName}} {{user.firstName}}</p>
+      <hr>
+      <p>שם רופא</p>
+    </div>
+    <div class="p-col-4">
+      <p>{{user.license}}</p>
+      <hr>
+      <p>מס' רשיון</p>
+    </div>
+    <div class="p-col-4">
+      <p>&nbsp;</p>
+      <hr>
+      <p>חתימה וחותמת</p>
+    </div>
+  </div>
+  <hr class="main-divider">
+  <div class="p-grid owner-instructions">
+    <div class="p-col">
+      <h3>הוראות לבעלי הכלב</h3>
+      <ol>
+        <li>כל כלב מגיל 3 חודשים חייב לקבל חיסון גד כלבת ולהוציא רשיון אחזקה.</li>
+        <li>כלב במקום ציבורי חייב להיות קשור ברצועה ומחסום לפיו.</li>
+        <li>במקרה נשיכה יש להודיע תוך 24 שעות ללשכת הבריאות / לרופא הוטרירי הרשותי ולהסגיר את הכלב תחת הסגר.</li>
+        <li>
+          <h5>ראש הרשות רשאי לסרב לתת רשיון או לבטלו במקרים אלו:</h5>
+          <ul>
+            <li>הכלב הוא בעל מזג פראי.</li>
+            <li>הכלב מהווה סכנה לבטחון הציבור.</li>
+            <li>הכלב לא קיבל זריקת חיסון גד כלבת.</li>
+            <li>הכלב מקים רעש שהוא מפגע לשכנים.</li>
+            <li>הכלב מוחזק בניגוד להוראות 2 ,3</li>
+          </ul>
+        </li>
+        <li>חובה להודיע לרשות אם הכלב איו יותר ברשות הבעלים.</li>
+      </ol>
+      <p>
+        (מתוך חוק עזר - פיקוח על כלבים)
+      </p>
+    </div>
+  </div>
+</div>

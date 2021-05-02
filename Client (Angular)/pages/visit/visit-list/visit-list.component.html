@@ -1,0 +1,37 @@
+<div class="page-content-header">
+  <div>
+    <h5>רשימת ביקורים</h5>
+  </div>
+  <div>
+    <p-button label="הוסף ביקור" icon="pi pi-plus" iconPos="left" class="p-button-sm" [routerLink]="['/visit', { animalId: inputAnimal.animalId }]"></p-button>
+  </div>
+</div>
+<table class="fixed_header pr-re-table">
+  <thead>
+  <tr class="pr-re-table-tr">
+    <th>רופא</th>
+    <th>תאריך</th>
+    <th>סיבה</th>
+    <th>אבחון 1</th>
+    <th>אבחון 2</th>
+    <th>אבחון 3</th>
+    <th style="width: 100px;">משקל</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let visit of visits" class="pr-re-table-tr" [routerLink]="['/visit', visit.visitId]">
+    <td>{{visit.user.lastName}}</td>
+    <td>{{visit.visitTime | date:"dd/MM/yyyy"}}</td>
+    <td>{{visit.cause | shortString: 60}}</td>
+    <td>{{visit.diagnosis1 | shortString: 60}}</td>
+    <td>{{visit.diagnosis2 | shortString: 60}}</td>
+    <td>{{visit.diagnosis3 | shortString: 60}}</td>
+    <td style="width: 100px;">{{visit.weight}}</td>
+  </tr>
+  </tbody>
+</table>
+<app-empty-list-error *ngIf="visits.length==0"></app-empty-list-error>
+
+
+
+

@@ -1,0 +1,68 @@
+.left > div {
+  left: 1rem;
+  color: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  margin-top: -20px;
+}
+
+.left > div > p-button {
+margin: 0px;
+}
+
+.active {
+  background: #e9ecef;
+  color: #495057;
+}
+
+.pr-re-table{
+  width: 100%;
+}
+
+.pr-re-table, .pr-re-table-tr > th, .pr-re-table-tr > td {
+  border: 1px solid #e9ecef;
+  border-collapse: collapse;
+}
+
+.pr-re-table-tr > th, .pr-re-table-tr > td {
+  padding: 10px;
+  text-align: center;
+}
+
+.pr-re-table-tr > th {
+  border: none;
+  background: #f8f9fa;
+}
+
+.pr-re-table-tr:hover{
+  background: #e9ecef;
+  color: #495057;
+}
+
+.pr-re-table-header{
+  text-align: left;
+}
+
+.display-block{
+  display: block;
+}
+
+.fixed_header{
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.fixed_header tbody{
+  display:block;
+  width: 100%;
+  overflow: auto;
+  max-height: 370px;
+}
+
+.fixed_header thead tr {
+  display: block;
+}
+
+.fixed_header th, .fixed_header td {
+  width: 400px;
+}

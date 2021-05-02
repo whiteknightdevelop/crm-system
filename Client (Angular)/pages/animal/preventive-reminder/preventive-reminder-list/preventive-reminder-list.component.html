@@ -1,0 +1,68 @@
+<div class="page-content-header">
+  <div>
+    <h5>תזכורות</h5>
+  </div>
+  <div>
+    <p-button label="הוסף" styleClass="p-button-link" class="p-d-inline-block" (onClick)="openDialogPreventiveReminder()"></p-button>
+    <p-button label="מחק" styleClass="p-button-link" class="p-d-inline-block" (onClick)="deletePreventiveReminder()"
+              [disabled]="selectedReminders.length<=0"></p-button>
+  </div>
+</div>
+<table class="fixed_header">
+  <thead>
+  <tr class="pr-re-table-tr">
+    <th>סמן</th>
+    <th>תאריך</th>
+    <th>טיפול</th>
+    <th>ימים</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let reminder of preventiveRemindersList" class="pr-re-table-tr" [ngClass]="(selectedReminders.includes(reminder))?'active':''">
+    <td>
+      <p-checkbox [value]="reminder" ngDefaultControl [(ngModel)]="selectedReminders"
+                  (ngModelChange)="changeCheck($event)"></p-checkbox>
+    </td>
+    <td (click)="goToVisit(reminder)" [ngClass]="reminder.preventiveTreatmentType ? 'mouse-pointer' : ''">{{reminder.reminderDate | date:"dd/MM/yyyy"}}</td>
+    <td (click)="goToVisit(reminder)" [ngClass]="reminder.preventiveTreatmentType ? 'mouse-pointer' : ''">{{reminder.preventiveReminderName | shortString: 60}}</td>
+    <td class="ltr-number-fix" [ngClass]="(reminder.remainingNumOfDays < 0)?'ng-invalid ng-dirty':''">
+      {{reminder.remainingNumOfDays.toString() | shortString: 60}}
+    </td>
+  </tr>
+  </tbody>
+</table>
+<app-empty-list-error *ngIf="preventiveRemindersList.length==0"></app-empty-list-error>
+<p-dialog id="add-reminder-dialog" header="הוסף תזכורת חדשה" [(visible)]="reminderDialogVisible"
+          [modal]="true" [resizable]="true" [closeOnEscape]="true" [dismissableMask]="true" [contentStyle]="{'overflow':'visible'}">
+
+  <form [formGroup]="reminderDialogForm">
+
+    <!-- Row -->
+    <div class="p-grid p-mt-2">
+      <div class="p-col">
+        <input id="dateOfReminder" type="date" class="p-inputtext p-component html5-calendar" pInputText formControlName="dateOfReminder" min="1900-01-01" max="2049-01-01">
+        <small id="dateOfReminder-help" *ngIf="dateOfReminder.invalid && reminderDialogForm.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+      </div>
+    </div>
+
+    <!-- Row -->
+    <div class="p-grid p-mt-4">
+      <div class="p-col">
+        <p-dropdown id="textOfReminder" [options]="remindersList" formControlName="textOfReminder" placeholder="בחר תזכורת"
+                    optionLabel="reminder" [showClear]="false" appendTo="body"
+                    [filter]="true" filterBy="reminder" emptyFilterMessage="אין תוצאה"
+                    [virtualScroll]="true" [itemSize]="30"></p-dropdown>
+        <small id="textOfReminder-help" *ngIf="textOfReminder.invalid && reminderDialogForm.touched" class="ng-invalid ng-dirty">שגיאה: השדה אינו תקין!</small>
+      </div>
+    </div>
+
+    <!-- Row -->
+    <div class="p-grid p-mt-4">
+      <div class="p-col">
+        <button pButton pRipple (click)="addPreventiveReminder()" type="button" label="אישור"
+                [disabled]="!confirmBtnenabled" class="p-button-success"></button>
+      </div>
+    </div>
+  </form>
+</p-dialog>
+

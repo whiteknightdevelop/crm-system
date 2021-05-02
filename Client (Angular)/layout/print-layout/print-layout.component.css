@@ -1,0 +1,70 @@
+@media screen {
+  :host {
+    display: none;
+  }
+}
+
+::ng-deep :root {
+  --page-width: 100%;
+}
+
+.header, .header-space {
+  height: 170px;
+  width: var(--page-width);
+}
+.footer, .footer-space {
+  height: 40px;
+  width: var(--page-width);
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0px;
+  right: 0px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0px;
+  right: 0px;
+}
+
+table {
+  width: var(--page-width);
+}
+
+.header p {
+  margin: 0;
+}
+
+.footer p {
+  margin: 1px;
+}
+
+.header-logo{
+  height: 105px;
+  float: left;
+  margin-top: 12px;
+}
+
+.header-date {
+  text-align: end;
+}
+
+.footer .address {
+  color: #00804a;
+}
+
+.footer .address span{
+  color: #a24131;
+}
+.footer .website {
+  direction: ltr;
+  color: #00804a;
+}
+
+.footer .website .pi-facebook {
+  color: #a24131;
+}

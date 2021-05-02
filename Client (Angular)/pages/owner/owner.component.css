@@ -1,0 +1,41 @@
+.card-min-height{
+  min-height: 470px;
+}
+
+.petadmin-card-address1-height{
+  height: 450px
+}
+
+.petadmin-card-address2-height{
+  height: 200px
+}
+
+.petadmin-card-animallist-height{
+  height: 200px;
+}
+
+.card-margin{
+  margin: 20px 0px 0px 0px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.shipping-card {
+  min-width: 120px;
+  margin: 20px auto;
+}
+
+.mat-radio-button {
+  display: block;
+  margin: 5px 0;
+}
+
+.owner-name-title{
+  font-size: 1.5em;
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+}
+

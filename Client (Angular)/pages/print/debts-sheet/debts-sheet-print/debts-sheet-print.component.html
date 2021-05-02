@@ -1,0 +1,30 @@
+<div class="print-content">
+  <div class="p-grid text-align-center">
+    <div class="p-col-12">
+      <h3>{{reportH1Title}} {{currentDate | date:'dd/MM/yyyy'}}</h3>
+    </div>
+  </div>
+  <p-table [value]="debtorsList" styleClass="p-datatable-gridlines rabies-list-by-date-print-table">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 50px;">מס'</th>
+        <th style="width: 120px;">שם משפחה</th>
+        <th style="width: 100px;">שם פרטי</th>
+        <th style="width: 100px;">טלפון</th>
+        <th style="width: 100px;">סיכום לקוח</th>
+        <th style="width: 200px;">ת. עדכון אחרון</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-item let-i="rowIndex">
+      <tr>
+        <td>{{i+1}}</td>
+        <td>{{item.lastName}}</td>
+        <td>{{item.firstName}}</td>
+        <td>{{item.phone}}</td>
+        <td>&#8362;{{item.totalAmount}}</td>
+        <td>{{item.debtDate | date:'dd/MM/yyyy'}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+

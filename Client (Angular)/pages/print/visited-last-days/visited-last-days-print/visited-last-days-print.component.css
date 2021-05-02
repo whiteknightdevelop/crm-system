@@ -1,0 +1,9 @@
+@media print{@page {size: landscape}}
+
+p {
+  margin: 0;
+}
+
+
+
+

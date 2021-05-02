@@ -1,0 +1,83 @@
+<div class="print-content">
+  <div class="p-grid text-align-center">
+    <div class="p-col-12">
+      <h3>סיכום תיק בע"ח</h3>
+    </div>
+  </div>
+  <h5 class="underline">פרטי בעלים</h5>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 95px;"><label>שם הבעלים:</label></div>
+    <div class="p-col-fixed" style="width: 120px;"><p>{{animalPage.owner.lastName}} {{animalPage.owner.firstName}}</p></div>
+    <div class="p-col-fixed" style="width: 40px;"><label>ת.ז:</label></div>
+    <div class="p-col-fixed" style="width: 110px;"><p>{{animalPage.owner.idNumber}}</p></div>
+    <div class="p-col-fixed" style="width: 60px;"><label>כתובת:</label></div>
+    <div class="p-col-fixed" style="width: 180px;"><p>{{animalPage.owner.street}} {{animalPage.owner.houseNumber}}/{{animalPage.owner.apartmentNumber}}, {{animalPage.owner.city}}</p></div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 50px;"><label>טלפון:</label></div>
+    <div class="p-col-fixed" style="width: 180px;"><p>{{animalPage.owner.phone}}</p></div>
+  </div>
+  <h5 class="underline">פרטי בע"ח</h5>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 80px;"><label>שם בע"ח:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.name}}</p></div>
+    <div class="p-col-fixed" style="width: 50px;"><label>סוג:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.type}}</p></div>
+    <div class="p-col-fixed" style="width: 40px;"><label>מין:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.gender}}</p></div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 80px;"><label>גזע:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.breed}}</p></div>
+    <div class="p-col-fixed" style="width: 50px;"><label>צבע:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.color}}</p></div>
+    <div class="p-col-fixed" style="width: 95px;"><label>תאריך לידה:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.dateOfBirth | date:"dd/MM/yyyy"}}</p></div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col-fixed" style="width: 80px;"><label>מס' שבב:</label></div>
+    <div class="p-col-fixed" style="width: 100px;"><p>{{animalPage.animal.chipNumber | shortString: 60}}</p></div>
+  </div>
+  <h5 class="underline">רשימת ביקורים</h5>
+  <p-table [value]="animalPage.visitsList" styleClass="rabies-list-by-date-print-table">
+    <ng-template pTemplate="body" let-item let-i="rowIndex">
+      <tr>
+        <td>
+          <div class="p-grid">
+            <div class="p-col-fixed" style="width: 50px;">
+              <div>{{i+1}}</div>
+            </div>
+            <div class="p-col-fixed" style="width: 100px;">
+              <div><label>תאריך ביקור: </label>{{item.visitTime | date:'dd/MM/yyyy'}}</div>
+            </div>
+            <div class="p-col">
+              <div><label>סיבת ביקור: </label>{{item.cause | emptyString}}</div>
+              <div><label>תסמינים: </label>{{item.symptoms | emptyString}}</div>
+              <div><label>אבחון: </label>{{item.diagnosis1 | emptyString}} {{item.diagnosis2}} {{item.diagnosis3}}</div>
+              <div><label>טיפול: </label>{{item.treatment1 | emptyString}} {{item.treatment2}} {{item.treatment3}} {{item.treatment4}}
+                {{item.treatment5}} {{item.treatment6}}</div>
+              <div>
+                <label>טיפולים מונעים: </label>
+                <ng-container *ngIf="item.preventiveTreatmentsList.length > 0">
+                  <ng-container *ngFor="let item of item.preventiveTreatmentsList; let isLast=last">
+                    {{item.name}}{{isLast ? '.' : ', '}}
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="item.preventiveTreatmentsList.length == 0">
+                  אין
+                </ng-container>
+              </div>
+              <div class="measurements">
+                <label>מדדים: </label>
+                <div>חום: {{item.temperature | measurements}},</div>
+                <div> משקל: {{item.weight | measurements}},</div>
+                <div> דופק: {{item.pulse | measurements}}</div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+

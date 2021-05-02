@@ -1,0 +1,33 @@
+<div class="page-content-header">
+  <div>
+    <h5>רשימת בעלי־חיים</h5>
+  </div>
+  <div>
+    <p-button label="הוסף בעל־חיים" icon="pi pi-plus" iconPos="left" class="p-button-sm" [routerLink]="['/animal', { ownerid: ownerId }]"></p-button>
+  </div>
+</div>
+<table class="fixed_header">
+  <thead>
+  <tr class="pr-re-table-tr">
+    <th>שם</th>
+    <th>סוג</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let animal of filteredAnimalList" class="pr-re-table-tr" [routerLink]="['/animal', animal.animalId]">
+    <td [ngClass]="{'text-muted' : animal.active == false}">{{animal.name}}</td>
+    <td [ngClass]="{'text-muted' : animal.active == false}">{{animal.type}}</td>
+    <td><img [ngClass]="{'img-muted' : animal.active == false}" src="{{animal.type| animalImgUrlByType}}" [alt]="animal.name" width="30"
+             style="border: 1px solid #ced4da;"/></td>
+  </tr>
+  </tbody>
+</table>
+<app-empty-list-error *ngIf="filteredAnimalList.length==0"></app-empty-list-error>
+<div class="p-mt-3">
+  <ng-container *ngIf="filteredAnimalList.length!=0">
+    <p-button label="כולם" styleClass="p-button-link" class="p-d-inline-block" [disabled]="!activeFilterOn"  (onClick)="filterAll()"></p-button>
+    <p-button label="פעילים" styleClass="p-button-link" class="p-d-inline-block" [disabled]="activeFilterOn" (onClick)="filterActive()"></p-button>
+  </ng-container>
+</div>
+
